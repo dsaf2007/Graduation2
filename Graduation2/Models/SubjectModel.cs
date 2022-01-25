@@ -19,13 +19,15 @@ namespace Graduation2.Models
       public string year {get;set;} // 개설연도
       public int designCredit {get;set;} // 설계학점
   }
-  // Category-Credit Pair를 통해 사용자 과목 read
-  public class Pair<"name" , List<string>list /int/ "O,X">
-  {
-    public string keyword {get; set;}
-    // public T value {get; set;}
-  }
-  // Pair<int> creditList;
-  // Pair<List<Subject>> ...;
+
+// DB 이용하여 rule 및 데이터 처리하여 임시 삭제
+//   // Category-Credit Pair를 통해 사용자 과목 read
+//   public class Pair<"name" , List<string>list /int/ "O,X">
+//   {
+//     public string keyword {get; set;}
+//     // public T value {get; set;}
+//   }
+//   // Pair<int> creditList;
+//   // Pair<List<Subject>> ...;
 
 }
