@@ -223,7 +223,6 @@ D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Reflection.
 D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Resources.Reader.dll
 D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Resources.ResourceManager.dll
 D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Resources.Writer.dll
-D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Runtime.CompilerServices.Unsafe.dll
 D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Runtime.CompilerServices.VisualC.dll
 D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Runtime.dll
 D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\refs\System.Runtime.Extensions.dll
@@ -351,3 +350,17 @@ D:\repos\Graduation2\Graduation2\obj\Debug\netcoreapp3.1\Graduation2.csproj.Copy
 D:\repos\Graduation2\Graduation2\obj\Debug\netcoreapp3.1\Graduation2.dll
 D:\repos\Graduation2\Graduation2\obj\Debug\netcoreapp3.1\Graduation2.pdb
 D:\repos\Graduation2\Graduation2\obj\Debug\netcoreapp3.1\Graduation2.genruntimeconfig.cache
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\BouncyCastle.Crypto.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\ExcelDataReader.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\ExcelDataReader.DataSet.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\Google.Protobuf.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\K4os.Compression.LZ4.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\K4os.Compression.LZ4.Streams.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\K4os.Hash.xxHash.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\MySql.Data.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\Ubiety.Dns.Core.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\ZstdNet.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\System.Configuration.ConfigurationManager.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\System.Runtime.CompilerServices.Unsafe.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\System.Security.Cryptography.ProtectedData.dll
+D:\repos\Graduation2\Graduation2\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll

@@ -14,13 +14,6 @@ namespace Graduation2.Models
 {
   public class TempRule
   {
-    // TempRule(){}
-    // TempRule(string keyword_, string question_type_, string value_)
-    // {
-    //   this.keyword = keyword_;
-    //   this.question_type = question_type_;
-    //   this.value = value_;
-    // }
     public string keyword;
     public string question_type;
     public string value;
@@ -48,9 +41,7 @@ namespace Graduation2.Models
           temp.question_type=reader["question_type"].ToString();
           temp.value = reader["value"].ToString();
           //rule.Add(new TempRule(){reader["keyword"].ToString(),reader["question_type"].ToString(),reader["value"].ToString()});
-          rule.Add(temp);
-
-          
+          this.rule.Add(temp);
         }
       }
     }
