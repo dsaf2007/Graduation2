@@ -46,8 +46,6 @@ namespace Graduation2.Models
       }
     }
   }
-      
+  
   }
-
-
 }
