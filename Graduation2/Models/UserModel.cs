@@ -36,12 +36,15 @@ namespace Graduation2.Models
         {
             while(reader.Read())
             {
-            TempRule temp = new TempRule();
-            temp.keyword=reader["keyword"].ToString();
-            temp.question_type=reader["question_type"].ToString();
-            temp.value = reader["value"].ToString();
-            //rule.Add(new TempRule(){reader["keyword"].ToString(),reader["question_type"].ToString(),reader["value"].ToString()});
-            this.rule.Add(temp);
+            // TempRule temp = new TempRule();
+            // temp.keyword=reader["keyword"].ToString();
+            // temp.question_type=reader["question_type"].ToString();
+            // temp.value = reader["value"].ToString();
+            rule.Add(new TempRule{
+                reader["keyword"].ToString(),
+                reader["question_type"].ToString(),
+                reader["value"].ToString()
+                });
             }
         }
         }
@@ -49,7 +52,24 @@ namespace Graduation2.Models
 
     public void getUserSubject(string filename)
     {
-        
+        using (var subjectStream = System.IO.File.Open(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+        {
+            using (var subjectReader = ExcelReaderFactory.CreateReader(SubjectStream))
+            {
+                subjectReader.Read();
+                using (MysqlConnection connection = new MysqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
+                {
+                    while(subjectReader.Read())
+                    {
+                    string insertQuery = string.Format("INSERT INTO UserSubject(year,semester,completionDiv,completionDivField,SubjectCode,"
+                                        +"SubjectName,credit,engineeringFactor,engineeringFactorDetail,english,retake)"
+                                        +"VALUES ( '{0}','{1}','{2}','{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}')"
+                                        ,subjectReader
+                    }
+                }
+
+            }
+        }
     }
   
   }
