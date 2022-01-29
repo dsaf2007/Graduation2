@@ -25,27 +25,32 @@ namespace Graduation2.Models
     public List<TempRule> rule = new List<TempRule>();
 
     public void getRule()
-  {
-    using (MySqlConnection connection  = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
     {
-      string selectQuery = "SELECT * FROM rule";
-      connection.Open();
-      MySqlCommand command = new MySqlCommand(selectQuery, connection);
-
-      using (var reader = command.ExecuteReader())
-      {
-        while(reader.Read())
+        using (MySqlConnection connection  = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
         {
-          TempRule temp = new TempRule();
-          temp.keyword=reader["keyword"].ToString();
-          temp.question_type=reader["question_type"].ToString();
-          temp.value = reader["value"].ToString();
-          //rule.Add(new TempRule(){reader["keyword"].ToString(),reader["question_type"].ToString(),reader["value"].ToString()});
-          this.rule.Add(temp);
+        string selectQuery = "SELECT * FROM rule";
+        connection.Open();
+        MySqlCommand command = new MySqlCommand(selectQuery, connection);
+
+        using (var reader = command.ExecuteReader())
+        {
+            while(reader.Read())
+            {
+            TempRule temp = new TempRule();
+            temp.keyword=reader["keyword"].ToString();
+            temp.question_type=reader["question_type"].ToString();
+            temp.value = reader["value"].ToString();
+            //rule.Add(new TempRule(){reader["keyword"].ToString(),reader["question_type"].ToString(),reader["value"].ToString()});
+            this.rule.Add(temp);
+            }
         }
-      }
+        }
     }
-  }
+
+    public void getUserSubject(string filename)
+    {
+        
+    }
   
   }
 }
