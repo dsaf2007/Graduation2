@@ -30,4 +30,26 @@ namespace Graduation2.Models
 //   // Pair<int> creditList;
 //   // Pair<List<Subject>> ...;
 
+  public class ListPair
+  {
+    public string keyWord{get;set;}
+    public List<string> subjectList = new List<string>();
+
+    public void AddToList(string className_)
+    {
+        this.subjectList.Add(className_);
+    }
+  }
+
+  public class NumPair
+  {
+    public string keyWord{get;set;}
+    public int credit_num =0;
+
+    public void addCredit(int credit_)
+    {
+      this.credit_num += credit_;
+    }
+  }
+
 }
