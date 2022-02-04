@@ -30,26 +30,43 @@ namespace Graduation2.Models
 //   // Pair<int> creditList;
 //   // Pair<List<Subject>> ...;
 
-  public class ListPair
-  {
-    public string keyWord{get;set;}
-    public List<string> subjectList = new List<string>();
 
-    public void AddToList(string className_)
-    {
-        this.subjectList.Add(className_);
-    }
+  //Pair 대신 우선 Dictionary 사용 해보기
+  // public class ListPair
+  // {
+  //   public string keyWord{get;set;}
+  //   public List<string> subjectList = new List<string>();
+
+  //   public void AddToList(string className_)
+  //   {
+  //       this.subjectList.Add(className_);
+  //   }
+  // }
+
+  // public class NumPair
+  // {
+  //   public string keyWord{get;set;}
+  //   public int credit_num =0;
+
+  //   public void addCredit(int credit_)
+  //   {
+  //     this.credit_num += credit_;
+  //   }
+  // }
+
+  public List<string> addToList(List<string> list_,string input_)
+  {
+    List<string> temp = new List<string>();
+
+    temp = list_;
+    temp.Add(input_);
+
+    return temp;
   }
 
-  public class NumPair
+  public int addNum(int num_, int add_)
   {
-    public string keyWord{get;set;}
-    public int credit_num =0;
-
-    public void addCredit(int credit_)
-    {
-      this.credit_num += credit_;
-    }
+    retrun num_ + add_;
   }
 
 }
