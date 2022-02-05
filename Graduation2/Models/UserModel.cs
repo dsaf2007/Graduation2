@@ -23,8 +23,8 @@ namespace Graduation2.Models
 
         //public List<Rule.Models.Rule> rule = new List<Rule.Models.Rule>();
         public List<TempRule> rule = new List<TempRule>();
-    //    public List<ListPair> subjectNameList = new List<ListPair>();
-    //     public List<NumPair> subjectCreditList = new List<NumPair>(); 
+        //    public List<ListPair> subjectNameList = new List<ListPair>();
+        //     public List<NumPair> subjectCreditList = new List<NumPair>(); 
         public Dictionary<string, List<Subject>> subjectNameList = new Dictionary<Subject, List<string>>();
         public Dictionary<string, int> subjectCreditList = new Dictionary<string, int>();
 
@@ -55,25 +55,6 @@ namespace Graduation2.Models
             }
         }
 
-        public void initPairList()
-        {
-            using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
-            {
-                string selectQuery = "SELECT DISTINCT keyword FROM rule";
-                connection.Open();
-                MySqlCommand command = new MySqlCommand(selectQuery, connection);
-                List<string> tempList = new List<string>();
-
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                    subjectNameList.Add(reader["keyword"].ToString(),tempList);
-                    subjectCreditList.add(reader["keyword"].ToString(),0);
-                    }
-                }
-            }
-        }
 
         public void getUserSubject(string filename_)
         {
@@ -142,15 +123,15 @@ namespace Graduation2.Models
                     {
                         case "수학":
                             //this.mscMathCredit += subjectCredit;
-                            this.subjectCreditList["수학"] +=subjectCredit;
+                            this.subjectCreditList["수학"] += subjectCredit;
                             break;
                         case "기초과학":
                             if (userSubject.className.Contains("실험"))
-                            // this.mscScienceExperimentCredit += subjectCredit;
-                            // this.mscScienceCredit += subjectCredit;
-                            this.subjectCreditList["실험"] += subjectCredit;
+                                // this.mscScienceExperimentCredit += subjectCredit;
+                                // this.mscScienceCredit += subjectCredit;
+                                this.subjectCreditList["실험"] += subjectCredit;
                             this.subjectCreditList["기초과학"] += subjectCredit;
-                             break;
+                            break;
                         case "전산학":
                             //this.mscComputerCredit += subjectCredit;
                             this.subjectCreditList["전산학"] += subjectCredit;
@@ -196,7 +177,7 @@ namespace Graduation2.Models
                         // this.majorDesignCredit += subjectCredit;
                         // this.majorDesignList.Add(userSubject);
                         // this.majorEssentialList.Add(userSubject);
-                         this.subjectNameList["전공설계"].Add(new Subject
+                        this.subjectNameList["전공설계"].Add(new Subject
                         {
                             subjectCode = userSubject_.subjectCode,
                             subjectName = userSubject_.subjectName,
@@ -230,27 +211,27 @@ namespace Graduation2.Models
                     }
                     //this.majorClasses.Add(userSubject);
                     this.subjectNameList["전공"].Add(new Subject
-                        {
-                            subjectCode = userSubject_.subjectCode,
-                            subjectName = userSubject_.subjectName,
-                            credit = userSubject_.credit,
-                            year = userSubject_.year,
-                            designCredit = 0
-                        });
+                    {
+                        subjectCode = userSubject_.subjectCode,
+                        subjectName = userSubject_.subjectName,
+                        credit = userSubject_.credit,
+                        year = userSubject_.year,
+                        designCredit = 0
+                    });
                 }
                 if (userSubject.english == "영어") // 영어 전공과 교양 분류 기준 필요
                 {
                     // this.englishCredit += subjectCredit;
                     // this.englishList.Add(userSubject);
                     this.subjectNameList["영어"].Add(new Subject
-                        {
-                            subjectCode = userSubject_.subjectCode,
-                            subjectName = userSubject_.subjectName,
-                            credit = userSubject_.credit,
-                            year = userSubject_.year,
-                            designCredit = 0
-                        });
-                        this.subjectCreditList["영어"] += subjectCredit;
+                    {
+                        subjectCode = userSubject_.subjectCode,
+                        subjectName = userSubject_.subjectName,
+                        credit = userSubject_.credit,
+                        year = userSubject_.year,
+                        designCredit = 0
+                    });
+                    this.subjectCreditList["영어"] += subjectCredit;
                 }
             }
         }
@@ -305,21 +286,42 @@ namespace Graduation2.Models
             return temp;
         }
 
-    public List<string> addToList(List<string> list_,string input_)
-    {
-        List<string> temp = new List<string>();
+        public List<string> addToList(List<string> list_, string input_)
+        {
+            List<string> temp = new List<string>();
 
-        temp = list_;
-        temp.Add(input_);
+            temp = list_;
+            temp.Add(input_);
 
-        return temp;
+            return temp;
+        }
+
+        public int addNum(int num_, int add_)
+        {
+            return num_ + add_;
+        }
+
+        // dictionary를 사용하기에 예외
+        // public void initPairList()
+        // {
+        //     using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
+        //     {
+        //         string selectQuery = "SELECT DISTINCT keyword FROM rule";
+        //         connection.Open();
+        //         MySqlCommand command = new MySqlCommand(selectQuery, connection);
+        //         List<string> tempList = new List<string>();
+
+        //         using (var reader = command.ExecuteReader())
+        //         {
+        //             while (reader.Read())
+        //             {
+        //             subjectNameList.Add(reader["keyword"].ToString(),tempList);
+        //             subjectCreditList.add(reader["keyword"].ToString(),0);
+        //             }
+        //         }
+        //     }
+        // }
+
+
     }
-
-    public int addNum(int num_, int add_)
-    {
-        return num_ + add_;
-    }
-
-
-}
 }
