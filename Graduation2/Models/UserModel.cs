@@ -23,8 +23,10 @@ namespace Graduation2.Models
 
         //public List<Rule.Models.Rule> rule = new List<Rule.Models.Rule>();
         public List<TempRule> rule = new List<TempRule>();
-        public List<ListPair> subjectNameList = new List<ListPair>();
-        public List<NumPair> subjectCreditList = new List<NumPair>();
+    //    public List<ListPair> subjectNameList = new List<ListPair>();
+    //     public List<NumPair> subjectCreditList = new List<NumPair>(); 
+        public Dictionary<string, List<Subject>> subjectNameList = new Dictionary<Subject, List<string>>();
+        public Dictionary<string, int> subjectCreditList = new Dictionary<string, int>();
 
 
         public void getRule()
@@ -66,13 +68,8 @@ namespace Graduation2.Models
                 {
                     while (reader.Read())
                     {
-                        subjectNameList.Add(new ListPair{
-                    reader["keyword"].ToString(),
-                    tempList
-                });
-                        subjectCreditList.add(new NumPair{
-                    reader["keyword"].ToString()
-                });
+                    subjectNameList.Add(reader["keyword"].ToString(),tempList);
+                    subjectCreditList.add(reader["keyword"].ToString(),0);
                     }
                 }
             }
@@ -111,14 +108,31 @@ namespace Graduation2.Models
 
                 if (userSubject.engineeringFactorDetail == "기초교양(교필)")
                 {
-                    this.publicLibCredit += subjectCredit;
-                    this.publicClasses.Add(userSubject);
+                    // this.publicLibCredit += subjectCredit;
+                    // this.publicClasses.Add(userSubject);
+                    this.subjectNameList["공통교양"].Add(new Subject
+                    {
+                        subjectCode = userSubject_.subjectCode,
+                        subjectName = userSubject_.subjectName,
+                        credit = userSubject_.credit,
+                        year = userSubject_.year,
+                        designCredit = 0
+                    });
+                    this.subjectCreditList["공통교양"] += subjectCredit;
                 }
                 if (userSubject.engineeringFactorDetail == "기본소양")
                 {
-                    this.basicLibCredit += subjectCredit;
-                    this.basicClasses.Add(userSubject);
-
+                    // this.basicLibCredit += subjectCredit;
+                    // this.basicClasses.Add(userSubject);
+                    this.subjectNameList["기본소양"].Add(new Subject
+                    {
+                        subjectCode = userSubject_.subjectCode,
+                        subjectName = userSubject_.subjectName,
+                        credit = userSubject_.credit,
+                        year = userSubject_.year,
+                        designCredit = 0
+                    });
+                    this.subjectCreditList["기본소양"] += subjectCredit;
                 }
                 if (userSubject.engineeringFactor == "MSC/BSM")
                 {
@@ -225,5 +239,21 @@ namespace Graduation2.Models
             return temp;
         }
 
+    public List<string> addToList(List<string> list_,string input_)
+    {
+        List<string> temp = new List<string>();
+
+        temp = list_;
+        temp.Add(input_);
+
+        return temp;
     }
+
+    public int addNum(int num_, int add_)
+    {
+        return num_ + add_;
+    }
+
+
+}
 }

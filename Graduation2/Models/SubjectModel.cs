@@ -20,7 +20,7 @@ namespace Graduation2.Models
       public int designCredit {get;set;} // 설계학점
   }
 
- public class UserSubject
+   public class UserSubject
     {
         public string year { get; set; }
         public string semester { get; set; }
@@ -28,8 +28,8 @@ namespace Graduation2.Models
         public string completionDiv { get; set; }
         public string completionDivField { get; set; }
 
-        public string classCode { get; set; }
-        public string className { get; set; }
+        public string subjectCode { get; set; }
+        public string subjectName { get; set; }
         public string credit { get; set; }
 
         public string engineeringFactor { get; set; }
