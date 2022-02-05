@@ -136,55 +136,121 @@ namespace Graduation2.Models
                 }
                 if (userSubject.engineeringFactor == "MSC/BSM")
                 {
-                    this.mscCredit += subjectCredit;
+                    //this.mscCredit += subjectCredit;
+                    this.subjectCreditList["MSC/BSM"] += subjectCredit;
                     switch (userSubject.engineeringFactorDetail)
                     {
                         case "수학":
-                            this.mscMathCredit += subjectCredit;
+                            //this.mscMathCredit += subjectCredit;
+                            this.subjectCreditList["수학"] +=subjectCredit;
                             break;
                         case "기초과학":
                             if (userSubject.className.Contains("실험"))
-                                this.mscScienceExperimentCredit += subjectCredit;
-                            this.mscScienceCredit += subjectCredit;
-                            break;
+                            // this.mscScienceExperimentCredit += subjectCredit;
+                            // this.mscScienceCredit += subjectCredit;
+                            this.subjectCreditList["실험"] += subjectCredit;
+                            this.subjectCreditList["기초과학"] += subjectCredit;
+                             break;
                         case "전산학":
-                            this.mscComputerCredit += subjectCredit;
+                            //this.mscComputerCredit += subjectCredit;
+                            this.subjectCreditList["전산학"] += subjectCredit;
                             break;
                         default:
                             break;
                     }
-                    this.mscClasses.Add(userSubject);
+                    //this.mscClasses.Add(userSubject);
+                    this.subjectNameList["MSC/BSM"].Add(new Subject
+                    {
+                        subjectCode = userSubject_.subjectCode,
+                        subjectName = userSubject_.subjectName,
+                        credit = userSubject_.credit,
+                        year = userSubject_.year,
+                        designCredit = 0
+                    });
                 }
                 if (userSubject.engineeringFactor == "전공" || userSubject.completionDiv == "전공")
                 {
-                    this.majorCredit += subjectCredit;
+                    //this.majorCredit += subjectCredit;
+                    this.subjectCreditList["전공"] += subjectCredit;
                     if (userSubject.completionDiv == "전필")
                     {
-                        this.majorEssentialList.Add(userSubject);
-                        this.majorEssentialCredit += subjectCredit;
+                        // this.majorEssentialList.Add(userSubject);
+                        // this.majorEssentialCredit += subjectCredit;
+                        this.subjectNameList["전필"].Add(new Subject
+                        {
+                            subjectCode = userSubject_.subjectCode,
+                            subjectName = userSubject_.subjectName,
+                            credit = userSubject_.credit,
+                            year = userSubject_.year,
+                            designCredit = 0
+                        });
+                        this.subjectCreditList["전필"] += subjectCredit;
                     }
                     if (userSubject.completionDivField == "전문")
                     {
-                        this.majorSpecialCredit += subjectCredit;
+                        //this.majorSpecialCredit += subjectCredit;
+                        this.subjectCreditList["전문"] += subjectCredit;
                     }
                     if (userSubject.engineeringFactorDetail == "전공설계")
                     {
-                        this.majorDesignCredit += subjectCredit;
-                        this.majorDesignList.Add(userSubject);
-                        this.majorEssentialList.Add(userSubject);
+                        // this.majorDesignCredit += subjectCredit;
+                        // this.majorDesignList.Add(userSubject);
+                        // this.majorEssentialList.Add(userSubject);
+                         this.subjectNameList["전공설계"].Add(new Subject
+                        {
+                            subjectCode = userSubject_.subjectCode,
+                            subjectName = userSubject_.subjectName,
+                            credit = userSubject_.credit,
+                            year = userSubject_.year,
+                            designCredit = 0
+                        });
+                        this.subjectCreditList["전공설계"] += subjectCredit;
+                        this.subjectNameList["전문"].Add(new Subject
+                        {
+                            subjectCode = userSubject_.subjectCode,
+                            subjectName = userSubject_.subjectName,
+                            credit = userSubject_.credit,
+                            year = userSubject_.year,
+                            designCredit = 0
+                        });
                     }
                     if (userSubject.english == "영어")
                     {
-                        this.englishMajorCredit += subjectCredit;
-                        this.englishMajorList.Add(userSubject);
-
+                        // this.englishMajorCredit += subjectCredit;
+                        // this.englishMajorList.Add(userSubject);
+                        this.subjectNameList["영어"].Add(new Subject
+                        {
+                            subjectCode = userSubject_.subjectCode,
+                            subjectName = userSubject_.subjectName,
+                            credit = userSubject_.credit,
+                            year = userSubject_.year,
+                            designCredit = 0
+                        });
+                        this.subjectCreditList["영어"] += subjectCredit;
                     }
-                    this.majorClasses.Add(userSubject);
+                    //this.majorClasses.Add(userSubject);
+                    this.subjectNameList["전공"].Add(new Subject
+                        {
+                            subjectCode = userSubject_.subjectCode,
+                            subjectName = userSubject_.subjectName,
+                            credit = userSubject_.credit,
+                            year = userSubject_.year,
+                            designCredit = 0
+                        });
                 }
-                if (userSubject.english == "영어")
+                if (userSubject.english == "영어") // 영어 전공과 교양 분류 기준 필요
                 {
-                    this.englishCredit += subjectCredit;
-                    this.englishList.Add(userSubject);
+                    // this.englishCredit += subjectCredit;
+                    // this.englishList.Add(userSubject);
+                    this.subjectNameList["영어"].Add(new Subject
+                        {
+                            subjectCode = userSubject_.subjectCode,
+                            subjectName = userSubject_.subjectName,
+                            credit = userSubject_.credit,
+                            year = userSubject_.year,
+                            designCredit = 0
+                        });
+                        this.subjectCreditList["영어"] += subjectCredit;
                 }
             }
         }
