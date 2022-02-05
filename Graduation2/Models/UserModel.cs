@@ -12,98 +12,99 @@ using MySql.Data.MySqlClient;
 
 namespace Graduation2.Models
 {
-  public class TempRule
-  {
-    public string keyword;
-    public string question_type;
-    public string value;
-  }
-  public class UserInfo // 취득교과목
-  {
-
-    //public List<Rule.Models.Rule> rule = new List<Rule.Models.Rule>();
-    public List<TempRule> rule = new List<TempRule>();
-    public List<ListPair> subjectNameList = new List<ListPair>();
-    public List<NumPair> subjectCreditList = new List<NumPair>();
-    
-
-    public void getRule()
+    public class TempRule
     {
-        using (MySqlConnection connection  = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
-        {
-        string selectQuery = "SELECT * FROM rule";
-        connection.Open();
-        MySqlCommand command = new MySqlCommand(selectQuery, connection);
+        public string keyword;
+        public string question_type;
+        public string value;
+    }
+    public class UserInfo // 취득교과목
+    {
 
-        using (var reader = command.ExecuteReader())
+        //public List<Rule.Models.Rule> rule = new List<Rule.Models.Rule>();
+        public List<TempRule> rule = new List<TempRule>();
+        public List<ListPair> subjectNameList = new List<ListPair>();
+        public List<NumPair> subjectCreditList = new List<NumPair>();
+
+
+        public void getRule()
         {
-            while(reader.Read())
+            using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
             {
-            // TempRule temp = new TempRule();
-            // temp.keyword=reader["keyword"].ToString();
-            // temp.question_type=reader["question_type"].ToString();
-            // temp.value = reader["value"].ToString();
-            rule.Add(new TempRule{
+                string selectQuery = "SELECT * FROM rule";
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(selectQuery, connection);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        // TempRule temp = new TempRule();
+                        // temp.keyword=reader["keyword"].ToString();
+                        // temp.question_type=reader["question_type"].ToString();
+                        // temp.value = reader["value"].ToString();
+                        rule.Add(new TempRule{
                 reader["keyword"].ToString(),
                 reader["question_type"].ToString(),
                 reader["value"].ToString()
                 });
+                    }
+                }
             }
         }
-        }
-    }
 
-    public void initPairList()
-    {
-        using (MySqlConnection connection  = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
+        public void initPairList()
         {
-        string selectQuery = "SELECT DISTINCT keyword FROM rule";
-        connection.Open();
-        MySqlCommand command = new MySqlCommand(selectQuery, connection);
-        List<string> tempList = new List<string>();
-
-        using (var reader = command.ExecuteReader())
-        {
-            while(reader.Read())
+            using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
             {
-                subjectNameList.Add(new ListPair{
+                string selectQuery = "SELECT DISTINCT keyword FROM rule";
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(selectQuery, connection);
+                List<string> tempList = new List<string>();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        subjectNameList.Add(new ListPair{
                     reader["keyword"].ToString(),
                     tempList
                 });
-                subjectCreditList.add(new NumPair{
+                        subjectCreditList.add(new NumPair{
                     reader["keyword"].ToString()
-                })
+                });
+                    }
+                }
             }
         }
-    }
 
-    public void getUserSubject(string filename_)
-    {
-        // using (var subjectStream = System.IO.File.Open(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
-        // {
-        //     using (var subjectReader = ExcelReaderFactory.CreateReader(SubjectStream))
-        //     {
-        //         subjectReader.Read();
-        //         using (MysqlConnection connection = new MysqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
-        //         {
-        //             while(subjectReader.Read())
-        //             {
-        //             // string insertQuery = string.Format("INSERT INTO UserSubject(year,semester,completionDiv,completionDivField,SubjectCode,"
-        //             //                     +"SubjectName,credit,engineeringFactor,engineeringFactorDetail,english,retake)"
-        //             //                     +"VALUES ( '{0}','{1}','{2}','{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}')"
-        //             //                     ,subjectReader
-        //             }
-        //         }
+        public void getUserSubject(string filename_)
+        {
+            // using (var subjectStream = System.IO.File.Open(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            // {
+            //     using (var subjectReader = ExcelReaderFactory.CreateReader(SubjectStream))
+            //     {
+            //         subjectReader.Read();
+            //         using (MysqlConnection connection = new MysqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
+            //         {
+            //             while(subjectReader.Read())
+            //             {
+            //             // string insertQuery = string.Format("INSERT INTO UserSubject(year,semester,completionDiv,completionDivField,SubjectCode,"
+            //             //                     +"SubjectName,credit,engineeringFactor,engineeringFactorDetail,english,retake)"
+            //             //                     +"VALUES ( '{0}','{1}','{2}','{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}')"
+            //             //                     ,subjectReader
+            //             }
+            //         }
 
-        //     }
-        // }
-        public List<Subject> userSubject = new List<Subject>();
+            //     }
+            // }
+            List<UserSubject> userSubject = new List<UserSubject>();
 
-        userSubject = ReadUserSubject(filename_)
-
+            userSubject = ReadUserSubject(filename_);
 
 
-         foreach (UserSubject userSubject in userSubject_)
+
+            foreach (List<UserSubject> userSubject_ in userSubject)
             {
                 int subjectCredit = Convert.ToInt32(userSubject.credit);
                 this.totalCredit += subjectCredit;
@@ -172,58 +173,57 @@ namespace Graduation2.Models
                     this.englishList.Add(userSubject);
                 }
             }
-    }
-    
-    public List<UserSubject> ReadUserSubject(string filename_)
-    {
-        List<UserSubject> temp = new List<UserSubject>();
+        }
 
-        // 전체성적조회파일
-        using (var gradeStream = System.IO.File.Open(filename_, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+        public List<UserSubject> ReadUserSubject(string filename_)
         {
-            using (var gradeReader = ExcelReaderFactory.CreateReader(gradeStream))
+            List<UserSubject> temp = new List<UserSubject>();
+
+            // 전체성적조회파일
+            using (var gradeStream = System.IO.File.Open(filename_, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             {
-                gradeReader.Read();
-                string tempYear = "";
-                string tempSemester = "";
-                while (gradeReader.Read())
+                using (var gradeReader = ExcelReaderFactory.CreateReader(gradeStream))
                 {
-                    string[] valueArray = new string[19];
-                    for (int i = 0; i < 19; i++)
+                    gradeReader.Read();
+                    string tempYear = "";
+                    string tempSemester = "";
+                    while (gradeReader.Read())
                     {
-                        if (gradeReader.GetValue(i) == null)
-                            valueArray[i] = "";
-                        else
-                            valueArray[i] = Regex.Replace(gradeReader.GetValue(i).ToString(), @"\s", "");
+                        string[] valueArray = new string[19];
+                        for (int i = 0; i < 19; i++)
+                        {
+                            if (gradeReader.GetValue(i) == null)
+                                valueArray[i] = "";
+                            else
+                                valueArray[i] = Regex.Replace(gradeReader.GetValue(i).ToString(), @"\s", "");
+                        }
+                        if (valueArray[2] != "")
+                        {
+                            tempYear = valueArray[2];
+                        }
+                        if (valueArray[3] != "")
+                        {
+                            tempSemester = valueArray[3];
+                        }
+                        temp.Add(new UserSubject
+                        {
+                            year = tempYear, // 연도
+                            semester = tempSemester, // 학기
+                            completionDiv = valueArray[4], // 이수구분 : 전공, 전필, 학기, 공교 등
+                            completionDivField = valueArray[5], // 이수구분영역 : 기초, 전문, 자연과학 등
+                            classCode = valueArray[6], // 학수번호
+                            className = valueArray[8], // 과목명
+                            credit = valueArray[10], // 학점
+                            engineeringFactor = valueArray[16], // 공학요소 : 전공, MSC, 전문교양
+                            engineeringFactorDetail = valueArray[17], // 공학세부요소 : 전공설계, 수학, 과학 등
+                            english = valueArray[18], // 원어강의 종류
+                            retake = valueArray[13] //재수강 여부
+                        });
                     }
-                    if (valueArray[2] != "")
-                    {
-                        tempYear = valueArray[2];
-                    }
-                    if (valueArray[3] != "")
-                    {
-                        tempSemester = valueArray[3];
-                    }
-                    temp.Add(new UserSubject
-                    {
-                        year = tempYear, // 연도
-                        semester = tempSemester, // 학기
-                        completionDiv = valueArray[4], // 이수구분 : 전공, 전필, 학기, 공교 등
-                        completionDivField = valueArray[5], // 이수구분영역 : 기초, 전문, 자연과학 등
-                        classCode = valueArray[6], // 학수번호
-                        className = valueArray[8], // 과목명
-                        credit = valueArray[10], // 학점
-                        engineeringFactor = valueArray[16], // 공학요소 : 전공, MSC, 전문교양
-                        engineeringFactorDetail = valueArray[17], // 공학세부요소 : 전공설계, 수학, 과학 등
-                        english = valueArray[18], // 원어강의 종류
-                        retake = valueArray[13] //재수강 여부
-                    }); 
                 }
             }
+            return temp;
         }
-        return temp;
-    }
 
-  
-  }
+    }
 }

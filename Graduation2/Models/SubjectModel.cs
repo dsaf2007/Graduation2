@@ -20,6 +20,25 @@ namespace Graduation2.Models
       public int designCredit {get;set;} // 설계학점
   }
 
+ public class UserSubject
+    {
+        public string year { get; set; }
+        public string semester { get; set; }
+
+        public string completionDiv { get; set; }
+        public string completionDivField { get; set; }
+
+        public string classCode { get; set; }
+        public string className { get; set; }
+        public string credit { get; set; }
+
+        public string engineeringFactor { get; set; }
+        public string engineeringFactorDetail { get; set; }
+        public string english { get; set; }
+
+        public string retake { get; set; }
+    }
+
 // DB 이용하여 rule 및 데이터 처리하여 임시 삭제
 //   // Category-Credit Pair를 통해 사용자 과목 read
 //   public class Pair<"name" , List<string>list /int/ "O,X">
@@ -54,19 +73,5 @@ namespace Graduation2.Models
   //   }
   // }
 
-  public List<string> addToList(List<string> list_,string input_)
-  {
-    List<string> temp = new List<string>();
-
-    temp = list_;
-    temp.Add(input_);
-
-    return temp;
-  }
-
-  public int addNum(int num_, int add_)
-  {
-    retrun num_ + add_;
-  }
 
 }
