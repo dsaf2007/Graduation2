@@ -14,9 +14,9 @@ namespace Graduation2.Models
 {
     public class TempRule
     {
-        public string keyword;
-        public string question_type;
-        public string value;
+        public string keyword{get; set;}
+        public string question_type{get; set;}
+        public string value{get; set;}
     }
     public class UserInfo // 취득교과목
     {
@@ -41,15 +41,15 @@ namespace Graduation2.Models
                 {
                     while (reader.Read())
                     {
-                        TempRule temp = new TempRule();
-                        temp.keyword=reader["keyword"].ToString();
-                        temp.question_type=reader["question_type"].ToString();
-                        temp.value = reader["value"].ToString();
-                //         rule.Add(new TempRule{
-                // reader["keyword"].ToString(),
-                // reader["question_type"].ToString(),
-                // reader["value"].ToString()
-                // });
+                        // TempRule temp = new TempRule();
+                        // temp.keyword=reader["keyword"].ToString();
+                        // temp.question_type=reader["question_type"].ToString();
+                        // temp.value = reader["value"].ToString();
+                        rule.Add(new TempRule{
+                keyword = reader["keyword"].ToString(),
+                question_type = reader["question_type"].ToString(),
+                value = reader["value"].ToString()
+                });
                     }
                 }
             }
@@ -82,51 +82,51 @@ namespace Graduation2.Models
 
 
 
-            foreach (List<UserSubject> userSubjects in userSubject)
+            foreach (UserSubject userSubjects in userSubject)
             {
-                int subjectCredit = Convert.ToInt32(userSubject.credit);
-                this.totalCredit += subjectCredit;
+                int subjectCredit = Convert.ToInt32(userSubjects.credit);
+                //this.totalCredit += subjectCredit;
 
-                if (userSubject.engineeringFactorDetail == "기초교양(교필)")
+                if (userSubjects.engineeringFactorDetail == "기초교양(교필)")
                 {
                     // this.publicLibCredit += subjectCredit;
                     // this.publicClasses.Add(userSubject);
                     this.subjectNameList["공통교양"].Add(new Subject
                     {
-                        subjectCode = userSubject_.subjectCode,
-                        subjectName = userSubject_.subjectName,
-                        credit = userSubject_.credit,
-                        year = userSubject_.year,
+                        subjectCode = userSubjects.subjectCode,
+                        subjectName = userSubjects.subjectName,
+                        credit = userSubjects.credit,
+                        year = userSubjects.year,
                         designCredit = 0
                     });
                     this.subjectCreditList["공통교양"] += subjectCredit;
                 }
-                if (userSubject.engineeringFactorDetail == "기본소양")
+                if (userSubjects.engineeringFactorDetail == "기본소양")
                 {
                     // this.basicLibCredit += subjectCredit;
                     // this.basicClasses.Add(userSubject);
                     this.subjectNameList["기본소양"].Add(new Subject
                     {
-                        subjectCode = userSubject_.subjectCode,
-                        subjectName = userSubject_.subjectName,
-                        credit = userSubject_.credit,
-                        year = userSubject_.year,
+                        subjectCode = userSubjects.subjectCode,
+                        subjectName = userSubjects.subjectName,
+                        credit = userSubjects.credit,
+                        year = userSubjects.year,
                         designCredit = 0
                     });
                     this.subjectCreditList["기본소양"] += subjectCredit;
                 }
-                if (userSubject.engineeringFactor == "MSC/BSM")
+                if (userSubjects.engineeringFactor == "MSC/BSM")
                 {
                     //this.mscCredit += subjectCredit;
                     this.subjectCreditList["MSC/BSM"] += subjectCredit;
-                    switch (userSubject.engineeringFactorDetail)
+                    switch (userSubjects.engineeringFactorDetail)
                     {
                         case "수학":
                             //this.mscMathCredit += subjectCredit;
                             this.subjectCreditList["수학"] += subjectCredit;
                             break;
                         case "기초과학":
-                            if (userSubject.className.Contains("실험"))
+                            if (userSubjects.subjectName.Contains("실험"))
                                 // this.mscScienceExperimentCredit += subjectCredit;
                                 // this.mscScienceCredit += subjectCredit;
                                 this.subjectCreditList["실험"] += subjectCredit;
@@ -142,69 +142,69 @@ namespace Graduation2.Models
                     //this.mscClasses.Add(userSubject);
                     this.subjectNameList["MSC/BSM"].Add(new Subject
                     {
-                        subjectCode = userSubject_.subjectCode,
-                        subjectName = userSubject_.subjectName,
-                        credit = userSubject_.credit,
-                        year = userSubject_.year,
+                        subjectCode = userSubjects.subjectCode,
+                        subjectName = userSubjects.subjectName,
+                        credit = userSubjects.credit,
+                        year = userSubjects.year,
                         designCredit = 0
                     });
                 }
-                if (userSubject.engineeringFactor == "전공" || userSubject.completionDiv == "전공")
+                if (userSubjects.engineeringFactor == "전공" || userSubjects.completionDiv == "전공")
                 {
                     //this.majorCredit += subjectCredit;
                     this.subjectCreditList["전공"] += subjectCredit;
-                    if (userSubject.completionDiv == "전필")
+                    if (userSubjects.completionDiv == "전필")
                     {
                         // this.majorEssentialList.Add(userSubject);
                         // this.majorEssentialCredit += subjectCredit;
                         this.subjectNameList["전필"].Add(new Subject
                         {
-                            subjectCode = userSubject_.subjectCode,
-                            subjectName = userSubject_.subjectName,
-                            credit = userSubject_.credit,
-                            year = userSubject_.year,
+                            subjectCode = userSubjects.subjectCode,
+                            subjectName = userSubjects.subjectName,
+                            credit = userSubjects.credit,
+                            year = userSubjects.year,
                             designCredit = 0
                         });
                         this.subjectCreditList["전필"] += subjectCredit;
                     }
-                    if (userSubject.completionDivField == "전문")
+                    if (userSubjects.completionDivField == "전문")
                     {
                         //this.majorSpecialCredit += subjectCredit;
                         this.subjectCreditList["전문"] += subjectCredit;
                     }
-                    if (userSubject.engineeringFactorDetail == "전공설계")
+                    if (userSubjects.engineeringFactorDetail == "전공설계")
                     {
                         // this.majorDesignCredit += subjectCredit;
                         // this.majorDesignList.Add(userSubject);
                         // this.majorEssentialList.Add(userSubject);
                         this.subjectNameList["전공설계"].Add(new Subject
                         {
-                            subjectCode = userSubject_.subjectCode,
-                            subjectName = userSubject_.subjectName,
-                            credit = userSubject_.credit,
-                            year = userSubject_.year,
+                            subjectCode = userSubjects.subjectCode,
+                            subjectName = userSubjects.subjectName,
+                            credit = userSubjects.credit,
+                            year = userSubjects.year,
                             designCredit = 0
                         });
                         this.subjectCreditList["전공설계"] += subjectCredit;
                         this.subjectNameList["전문"].Add(new Subject
                         {
-                            subjectCode = userSubject_.subjectCode,
-                            subjectName = userSubject_.subjectName,
-                            credit = userSubject_.credit,
-                            year = userSubject_.year,
+                            subjectCode = userSubjects.subjectCode,
+                            subjectName = userSubjects.subjectName,
+                            credit = userSubjects.credit,
+                            year = userSubjects.year,
                             designCredit = 0
                         });
                     }
-                    if (userSubject.english == "영어")
+                    if (userSubjects.english == "영어")
                     {
                         // this.englishMajorCredit += subjectCredit;
                         // this.englishMajorList.Add(userSubject);
                         this.subjectNameList["영어"].Add(new Subject
                         {
-                            subjectCode = userSubject_.subjectCode,
-                            subjectName = userSubject_.subjectName,
-                            credit = userSubject_.credit,
-                            year = userSubject_.year,
+                            subjectCode = userSubjects.subjectCode,
+                            subjectName = userSubjects.subjectName,
+                            credit = userSubjects.credit,
+                            year = userSubjects.year,
                             designCredit = 0
                         });
                         this.subjectCreditList["영어"] += subjectCredit;
@@ -212,23 +212,23 @@ namespace Graduation2.Models
                     //this.majorClasses.Add(userSubject);
                     this.subjectNameList["전공"].Add(new Subject
                     {
-                        subjectCode = userSubject_.subjectCode,
-                        subjectName = userSubject_.subjectName,
-                        credit = userSubject_.credit,
-                        year = userSubject_.year,
+                        subjectCode = userSubjects.subjectCode,
+                        subjectName = userSubjects.subjectName,
+                        credit = userSubjects.credit,
+                        year = userSubjects.year,
                         designCredit = 0
                     });
                 }
-                if (userSubject.english == "영어") // 영어 전공과 교양 분류 기준 필요
+                if (userSubjects.english == "영어") // 영어 전공과 교양 분류 기준 필요
                 {
                     // this.englishCredit += subjectCredit;
                     // this.englishList.Add(userSubject);
                     this.subjectNameList["영어"].Add(new Subject
                     {
-                        subjectCode = userSubject_.subjectCode,
-                        subjectName = userSubject_.subjectName,
-                        credit = userSubject_.credit,
-                        year = userSubject_.year,
+                        subjectCode = userSubjects.subjectCode,
+                        subjectName = userSubjects.subjectName,
+                        credit = userSubjects.credit,
+                        year = userSubjects.year,
                         designCredit = 0
                     });
                     this.subjectCreditList["영어"] += subjectCredit;
