@@ -6,9 +6,9 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using ExcelDataReader;
-using MySql.Data.MySqlClient;
-//using Rule.Models;
+// using ExcelDataReader;
+// using MySql.Data.MySqlClient;
+using Graduation2.Models;
 
 namespace Graduation2.Models
 {
@@ -61,10 +61,19 @@ namespace Graduation2.Models
         public List<TempRule> rule = new List<TempRule>();
         //    public List<ListPair> subjectNameList = new List<ListPair>();
         //     public List<NumPair> subjectCreditList = new List<NumPair>(); 
-        public Dictionary<string, List<Subject>> subjectNameList = new Dictionary<Subject, List<string>>();
+        public Dictionary<string, List<string>> subjectNameList = new Dictionary<Subject, List<string>>();
         public Dictionary<string, int> subjectCreditList = new Dictionary<string, int>();
 
 
+            // dev temp
+        public static readonly string[] subjectKeywords = {
+            "공통교양", "기본소양", "수학", // MSC랑 수학과학전산학은 어떻게?
+            "과학", // 실험 포함? 따로?
+            "전산학", "전공", // 전공 안에 필수, 설계 등을 type 형태로 구분?
+            "전공필수", "전공설계",
+            "기초설계", // 얘네는 성적표에 '전공설계'로 나옴
+            "요소설계", "종합설계"
+        };
         public void getRule()
         {
             using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
@@ -112,164 +121,43 @@ namespace Graduation2.Models
 
             //     }
             // }
+
+
             List<UserSubject> userSubjects = new List<UserSubject>();
 
+            UserSubject testSubject = new UserSubject();
+            testSubject.credit = 3;
             userSubjects = ReadUserSubject(filename_);
+            // dev temp
+            userSubjects.Add(testSubject);
+            // dev temp
+            Dictionary<string, List<UserSubject>> keywordSubjectPair = new Dictionary<string, List<UserSubject>>();
+            Dictionary<string, int> keywordCreditPair = new Dictionary<string, int>();
 
 
-
-            foreach (List<UserSubject> userSubject in userSubjects)
+            foreach (UserSubject userSubject in userSubjects)
             {
-                int subjectCredit = Convert.ToInt32(userSubjects.credit);
-                this.totalCredit += subjectCredit;
+                int subjectCredit = Convert.ToInt32(userSubject.credit);
+                // this.totalCredit += subjectCredit;
 
-                if (userSubjects.engineeringFactorDetail == "기초교양(교필)")
+                // dev temp
+                List<string> keywordsOfSubject = userSubject.getKeyword();
+                foreach(string keyword in keywordsOfSubject)
                 {
-                    // this.publicLibCredit += subjectCredit;
-                    // this.publicClasses.Add(userSubject);
-                    this.subjectNameList["공통교양"].Add(new Subject
-                    {
-                        subjectCode = userSubject.subjectCode,
-                        subjectName = userSubject.subjectName,
-                        credit = userSubject.credit,
-                        year = userSubject.year,
-                        designCredit = 0
-                    });
-                    this.subjectCreditList["공통교양"] += subjectCredit;
-                }
-                if (userSubjects.engineeringFactorDetail == "기본소양")
-                {
-                    // this.basicLibCredit += subjectCredit;
-                    // this.basicClasses.Add(userSubject);
-                    this.subjectNameList["기본소양"].Add(new Subject
-                    {
-                        subjectCode = userSubject.subjectCode,
-                        subjectName = userSubject.subjectName,
-                        credit = userSubject.credit,
-                        year = userSubject.year,
-                        designCredit = 0
-                    });
-                    this.subjectCreditList["기본소양"] += subjectCredit;
-                }
-                if (userSubjects.engineeringFactor == "MSC/BSM")
-                {
-                    //this.mscCredit += subjectCredit;
-                    this.subjectCreditList["MSC/BSM"] += subjectCredit;
-                    switch (userSubjects.engineeringFactorDetail)
-                    {
-                        case "수학":
-                            //this.mscMathCredit += subjectCredit;
-                            this.subjectCreditList["수학"] += subjectCredit;
-                            break;
-                        case "기초과학":
-                            if (userSubjects.className.Contains("실험"))
-                                // this.mscScienceExperimentCredit += subjectCredit;
-                                // this.mscScienceCredit += subjectCredit;
-                                this.subjectCreditList["실험"] += subjectCredit;
-                            this.subjectCreditList["기초과학"] += subjectCredit;
-                            break;
-                        case "전산학":
-                            //this.mscComputerCredit += subjectCredit;
-                            this.subjectCreditList["전산학"] += subjectCredit;
-                            break;
-                        default:
-                            break;
-                    }
-                    //this.mscClasses.Add(userSubject);
-                    this.subjectNameList["MSC/BSM"].Add(new Subject
-                    {
-                        subjectCode = userSubject.subjectCode,
-                        subjectName = userSubject.subjectName,
-                        credit = userSubject.credit,
-                        year = userSubject.year,
-                        designCredit = 0
-                    });
-                }
-                if (userSubjects.engineeringFactor == "전공" || userSubjects.completionDiv == "전공")
-                {
-                    //this.majorCredit += subjectCredit;
-                    this.subjectCreditList["전공"] += subjectCredit;
-                    if (userSubjects.completionDiv == "전필")
-                    {
-                        // this.majorEssentialList.Add(userSubject);
-                        // this.majorEssentialCredit += subjectCredit;
-                        this.subjectNameList["전필"].Add(new Subject
-                        {
-                            subjectCode = userSubject.subjectCode,
-                            subjectName = userSubject.subjectName,
-                            credit = userSubject.credit,
-                            year = userSubject.year,
-                            designCredit = 0
-                        });
-                        this.subjectCreditList["전필"] += subjectCredit;
-                    }
-                    if (userSubjects.completionDivField == "전문")
-                    {
-                        //this.majorSpecialCredit += subjectCredit;
-                        this.subjectCreditList["전문"] += subjectCredit;
-                    }
-                    if (userSubjects.engineeringFactorDetail == "전공설계")
-                    {
-                        // this.majorDesignCredit += subjectCredit;
-                        // this.majorDesignList.Add(userSubject);
-                        // this.majorEssentialList.Add(userSubject);
-                        this.subjectNameList["전공설계"].Add(new Subject
-                        {
-                            subjectCode = userSubject.subjectCode,
-                            subjectName = userSubject.subjectName,
-                            credit = userSubject.credit,
-                            year = userSubject.year,
-                            designCredit = 0
-                        });
-                        this.subjectCreditList["전공설계"] += subjectCredit;
-                        this.subjectNameList["전문"].Add(new Subject
-                        {
-                            subjectCode = userSubject.subjectCode,
-                            subjectName = userSubject.subjectName,
-                            credit = userSubject.credit,
-                            year = userSubject.year,
-                            designCredit = 0
-                        });
-                    }
-                    if (userSubjects.english == "영어")
-                    {
-                        // this.englishMajorCredit += subjectCredit;
-                        // this.englishMajorList.Add(userSubject);
-                        this.subjectNameList["영어"].Add(new Subject
-                        {
-                            subjectCode = userSubject.subjectCode,
-                            subjectName = userSubject.subjectName,
-                            credit = userSubject.credit,
-                            year = userSubject.year,
-                            designCredit = 0
-                        });
-                        this.subjectCreditList["영어"] += subjectCredit;
-                    }
-                    //this.majorClasses.Add(userSubject);
-                    this.subjectNameList["전공"].Add(new Subject
-                    {
-                        subjectCode = userSubject.subjectCode,
-                        subjectName = userSubject.subjectName,
-                        credit = userSubject.credit,
-                        year = userSubject.year,
-                        designCredit = 0
-                    });
-                }
-                if (userSubjects.english == "영어") // 영어 전공과 교양 분류 기준 필요
-                {
-                    // this.englishCredit += subjectCredit;
-                    // this.englishList.Add(userSubject);
-                    this.subjectNameList["영어"].Add(new Subject
-                    {
-                        subjectCode = userSubject.subjectCode,
-                        subjectName = userSubject.subjectName,
-                        credit = userSubject.credit,
-                        year = userSubject.year,
-                        designCredit = 0
-                    });
-                    this.subjectCreditList["영어"] += subjectCredit;
+                  if(!subjectKeywords.Contains(keyword))
+                  {
+                    Console.WriteLine("Invalid keyword!");
+                  }
+                  else
+                  {
+                    // plus DB upload?
+                    keywordSubjectPair[keyword].Add(userSubject);
+                    keywordCreditPair[keyword] += userSubject.credit;
+                  }
                 }
             }
+            // dev temp
+            int _totalCredit = keywordCreditPair.Aggregate(0, (acc, subject) => acc + subject.Value);
         }
 
         public List<UserSubject> ReadUserSubject(string filename_)
