@@ -29,9 +29,11 @@ namespace Graduation2.Models
     public string english {get; set;} // 원어강의종류
     public string retake {get; set;} // 재수강구분
 
+    public string semester {get; set;} //학기
+
     public string getKeyword() 
     {
-      string keyword;
+      string keyword="";
       // keyword 계산?
       return keyword;
     }

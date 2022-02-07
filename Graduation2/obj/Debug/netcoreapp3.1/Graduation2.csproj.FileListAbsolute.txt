@@ -703,3 +703,14 @@ D:/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.genruntimec
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.Views.pdb
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.csproj.CopyComplete
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.genruntimeconfig.cache
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.csproj.AssemblyReference.cache
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.AssemblyInfoInputs.cache
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.AssemblyInfo.cs
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.csproj.CoreCompileInputs.cache
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.MvcApplicationPartsAssemblyInfo.cs
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.MvcApplicationPartsAssemblyInfo.cache
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.RazorAssemblyInfo.cache
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.RazorAssemblyInfo.cs
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.dll
+/Users/cdg/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.pdb

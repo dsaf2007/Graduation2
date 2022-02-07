@@ -25,7 +25,7 @@ namespace Graduation2.Models
         public List<TempRule> rule = new List<TempRule>();
         //    public List<ListPair> subjectNameList = new List<ListPair>();
         //     public List<NumPair> subjectCreditList = new List<NumPair>(); 
-        public Dictionary<string, List<Subject>> subjectNameList = new Dictionary<Subject, List<string>>();
+        public Dictionary<string, List<Subject>> subjectNameList = new Dictionary<string, List<Subject>>();
         public Dictionary<string, int> subjectCreditList = new Dictionary<string, int>();
 
 
@@ -41,15 +41,15 @@ namespace Graduation2.Models
                 {
                     while (reader.Read())
                     {
-                        // TempRule temp = new TempRule();
-                        // temp.keyword=reader["keyword"].ToString();
-                        // temp.question_type=reader["question_type"].ToString();
-                        // temp.value = reader["value"].ToString();
-                        rule.Add(new TempRule{
-                reader["keyword"].ToString(),
-                reader["question_type"].ToString(),
-                reader["value"].ToString()
-                });
+                        TempRule temp = new TempRule();
+                        temp.keyword=reader["keyword"].ToString();
+                        temp.question_type=reader["question_type"].ToString();
+                        temp.value = reader["value"].ToString();
+                //         rule.Add(new TempRule{
+                // reader["keyword"].ToString(),
+                // reader["question_type"].ToString(),
+                // reader["value"].ToString()
+                // });
                     }
                 }
             }
@@ -272,9 +272,9 @@ namespace Graduation2.Models
                             semester = tempSemester, // 학기
                             completionDiv = valueArray[4], // 이수구분 : 전공, 전필, 학기, 공교 등
                             completionDivField = valueArray[5], // 이수구분영역 : 기초, 전문, 자연과학 등
-                            classCode = valueArray[6], // 학수번호
-                            className = valueArray[8], // 과목명
-                            credit = valueArray[10], // 학점
+                            subjectCode = valueArray[6], // 학수번호
+                            subjectName = valueArray[8], // 과목명
+                            credit = Convert.ToInt32(valueArray[10]), // 학점
                             engineeringFactor = valueArray[16], // 공학요소 : 전공, MSC, 전문교양
                             engineeringFactorDetail = valueArray[17], // 공학세부요소 : 전공설계, 수학, 과학 등
                             english = valueArray[18], // 원어강의 종류
