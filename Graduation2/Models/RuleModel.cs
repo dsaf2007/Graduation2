@@ -6,8 +6,8 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using ExcelDataReader;
-using MySql.Data.MySqlClient;
+// using ExcelDataReader;
+// using MySql.Data.MySqlClient;
 
 namespace Rule.Models
 {
@@ -28,8 +28,8 @@ namespace Rule.Models
 
     }
 
-    public class RuleBuilder
-    {
+    // public class RuleBuilder
+    // {
         
-    }
+    // }
 }

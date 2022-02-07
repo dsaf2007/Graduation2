@@ -1,8 +1,8 @@
 {
   "runtimeOptions": {
     "additionalProbingPaths": [
-      "C:\\Users\\정동구\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\정동구\\.nuget\\packages"
+      "/Users/apple/.dotnet/store/|arch|/|tfm|",
+      "/Users/apple/.nuget/packages"
     ]
   }
 }
