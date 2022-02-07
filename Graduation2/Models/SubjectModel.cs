@@ -1,11 +1,12 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Cache;
-using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+
 using Graduation2.Models;
 // using ExcelDataReader;
 // using MySql.Data.MySqlClient;
@@ -18,11 +19,13 @@ namespace Graduation2.Models
       public string subjectName {get; set;} // 과목명
       public int credit {get;set;} // 학점
       public string year {get;set;} // 개설연도
+      public string semester {get;set;}
       public int designCredit {get;set;} // 설계학점
 
       public Subject() {}
   }
 
+  // todo 기초설계 요소설계 관련 수동 추가해야함
   public class UserSubject : Subject // 사용자 과목 read
   {
     public string completionDiv {get; set;} // 이수구분
@@ -34,66 +37,57 @@ namespace Graduation2.Models
 
     public UserSubject() {}
 
-    public List<string> getKeyword() 
+    public List<string> getKeywords() 
     {
-      List<string> keyword = new List<string>();
+      List<string> keywords = new List<string>();
       if (engineeringFactorDetail == "기초교양(교필)")
       {
-        keyword.Add("공통교양");
+        keywords.Add("공통교양");
       }
       if (engineeringFactorDetail == "기본소양")
       {
-        keyword.Add("기본소양");
+        keywords.Add("기본소양");
       }
       if (engineeringFactor == "MSC/BSM")
       {
-        keyword.Add("MSC/BSM");
+        keywords.Add("MSC/BSM");
         // msc 전체 학점 추가해야함
         if (engineeringFactorDetail == "수학")
         {
-          keyword.Add("수학");
+          keywords.Add("수학");
         }
         if (engineeringFactorDetail == "기초과학")
         {
           string key = subjectName.Contains("실험")? "과학실험" : "과학";
-          keyword.Add(key);
+          keywords.Add(key);
         }
         if (engineeringFactorDetail == "전산학")
         {
-          keyword.Add("전산학");
+          keywords.Add("전산학");
         }
       }
       if (engineeringFactor == "전공" || completionDiv == "전공")
       {
-          keyword.Add("전공");
+          keywords.Add("전공");
           if (completionDiv == "전필")
           {
-              keyword.Add("전공필수");
+              keywords.Add("전공필수");
           }
           if (completionDivField == "전문")
           {
-            keyword.Add("전공전문");
+            keywords.Add("전공전문");
           }
           if (engineeringFactorDetail == "전공설계")
           {
-            keyword.Add("전공설계");
+            keywords.Add("전공설계");
           }
       }
       if(english == "영어")
       {
-        keyword.Add("영어");
+        keywords.Add("영어");
       }
       // keyword 계산?
-      return keyword;
+      return keywords;
     }
   }
-  // Category-Credit Pair를 통해 사용자 과목 read
-  // public class Pair<"name" , List<string>list /int/ "O,X">
-  // {
-  //   public string keyword {get; set;}
-  //   // public T value {get; set;}
-  // }
-  // Pair<int> creditList;
-  // Pair<List<Subject>> ...;
-
 }

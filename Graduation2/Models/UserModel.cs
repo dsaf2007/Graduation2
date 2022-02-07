@@ -6,31 +6,12 @@ using System.Text.RegularExpressions;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-// using ExcelDataReader;
-// using MySql.Data.MySqlClient;
+using ExcelDataReader;
+using MySql.Data.MySqlClient;
 using Graduation2.Models;
 
 namespace Graduation2.Models
 {
-/*
-  public class UserInfo
-  {// 취득교과목
-    const List<String> keywords = 
-    {
-    "공통교양", "기본소양", "수학", // MSC랑 수학과학전산학은 어떻게?
-    "과학", // 실험 포함? 따로?
-    "전산학", "전공", // 전공 안에 필수, 설계 등을 type 형태로 구분?
-    "전공필수", "전공설계",
-    "기초설계", // 얘네는 성적표에 '전공설계'로 나옴
-    "요소설계", "종합설계",
-    };
-    // <keyword - 과목리스트>
-    public Dictionary<string, List<UserSubject>> subjectPair;
-    public int calcKeywordCredit()
-    {
-      return 0;
-    }
-    */
     /*
       - publicLibCredit # 수강한 총 공통교양 학점
       - basicLibCredit # 수강한 총 기본소양 학점
@@ -59,14 +40,13 @@ namespace Graduation2.Models
 
         //public List<Rule.Models.Rule> rule = new List<Rule.Models.Rule>();
         public List<TempRule> rule = new List<TempRule>();
-        //    public List<ListPair> subjectNameList = new List<ListPair>();
-        //     public List<NumPair> subjectCreditList = new List<NumPair>(); 
-        public Dictionary<string, List<string>> subjectNameList = new Dictionary<Subject, List<string>>();
-        public Dictionary<string, int> subjectCreditList = new Dictionary<string, int>();
 
+        private Dictionary<string, List<UserSubject>> keywordSubjectPair;
+        private Dictionary<string, int> keywordCreditPair;
 
-            // dev temp
-        public static readonly string[] subjectKeywords = {
+        private int totalCredit;
+
+        public static readonly string[] ruleKeywords = {
             "공통교양", "기본소양", "수학", // MSC랑 수학과학전산학은 어떻게?
             "과학", // 실험 포함? 따로?
             "전산학", "전공", // 전공 안에 필수, 설계 등을 type 형태로 구분?
@@ -74,6 +54,14 @@ namespace Graduation2.Models
             "기초설계", // 얘네는 성적표에 '전공설계'로 나옴
             "요소설계", "종합설계"
         };
+
+        public UserInfo()
+        {
+          keywordSubjectPair = new Dictionary<string, List<UserSubject>>();
+          keywordCreditPair = new Dictionary<string, int>();
+          totalCredit = 0;
+        }
+
         public void getRule()
         {
             using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
@@ -121,43 +109,20 @@ namespace Graduation2.Models
 
             //     }
             // }
-
-
             List<UserSubject> userSubjects = new List<UserSubject>();
+            // userSubjects = ReadUserSubject(filename_);
 
-            UserSubject testSubject = new UserSubject();
-            testSubject.credit = 3;
-            userSubjects = ReadUserSubject(filename_);
             // dev temp
-            userSubjects.Add(testSubject);
-            // dev temp
-            Dictionary<string, List<UserSubject>> keywordSubjectPair = new Dictionary<string, List<UserSubject>>();
-            Dictionary<string, int> keywordCreditPair = new Dictionary<string, int>();
-
-
             foreach (UserSubject userSubject in userSubjects)
             {
-                int subjectCredit = Convert.ToInt32(userSubject.credit);
-                // this.totalCredit += subjectCredit;
-
-                // dev temp
-                List<string> keywordsOfSubject = userSubject.getKeyword();
+                List<string> keywordsOfSubject = userSubject.getKeywords();
                 foreach(string keyword in keywordsOfSubject)
                 {
-                  if(!subjectKeywords.Contains(keyword))
-                  {
-                    Console.WriteLine("Invalid keyword!");
-                  }
-                  else
-                  {
-                    // plus DB upload?
-                    keywordSubjectPair[keyword].Add(userSubject);
-                    keywordCreditPair[keyword] += userSubject.credit;
-                  }
+                  keywordSubjectPair[keyword].Add(userSubject);
+                  keywordCreditPair[keyword] += userSubject.credit;
                 }
+                totalCredit += userSubject.credit;
             }
-            // dev temp
-            int _totalCredit = keywordCreditPair.Aggregate(0, (acc, subject) => acc + subject.Value);
         }
 
         public List<UserSubject> ReadUserSubject(string filename_)
@@ -196,9 +161,9 @@ namespace Graduation2.Models
                             semester = tempSemester, // 학기
                             completionDiv = valueArray[4], // 이수구분 : 전공, 전필, 학기, 공교 등
                             completionDivField = valueArray[5], // 이수구분영역 : 기초, 전문, 자연과학 등
-                            classCode = valueArray[6], // 학수번호
-                            className = valueArray[8], // 과목명
-                            credit = valueArray[10], // 학점
+                            subjectCode = valueArray[6], // 학수번호
+                            subjectName = valueArray[8], // 과목명
+                            credit = Convert.ToInt32(valueArray[10]), // 학점
                             engineeringFactor = valueArray[16], // 공학요소 : 전공, MSC, 전문교양
                             engineeringFactorDetail = valueArray[17], // 공학세부요소 : 전공설계, 수학, 과학 등
                             english = valueArray[18], // 원어강의 종류
