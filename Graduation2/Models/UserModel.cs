@@ -25,7 +25,7 @@ namespace Graduation2.Models
         public List<TempRule> rule = new List<TempRule>();
         //    public List<ListPair> subjectNameList = new List<ListPair>();
         //     public List<NumPair> subjectCreditList = new List<NumPair>(); 
-        public Dictionary<string, List<Subject>> subjectNameList = new Dictionary<Subject, List<string>>();
+        public Dictionary<string, List<Subject>> subjectNameList = new Dictionary<string, List<Subject>>();
         public Dictionary<string, int> subjectCreditList = new Dictionary<string, int>();
 
 
