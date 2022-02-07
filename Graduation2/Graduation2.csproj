@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CSharpExtension.System.Collections" Version="1.0.0.364" />
+    <PackageReference Include="ExcelDataReader" Version="3.6.0" />
+    <PackageReference Include="ExcelDataReader.DataSet" Version="3.6.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.15" />
+    <PackageReference Include="MySql.Data" Version="8.0.28" />
+    <PackageReference Include="MySql.Data.EntityFrameworkCore" Version="8.0.22" />
   </ItemGroup>
 
 </Project>

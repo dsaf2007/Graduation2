@@ -82,7 +82,7 @@ namespace Graduation2.Models
 
 
 
-            foreach (List<UserSubject> userSubject_ in userSubject)
+            foreach (List<UserSubject> userSubjects in userSubject)
             {
                 int subjectCredit = Convert.ToInt32(userSubject.credit);
                 this.totalCredit += subjectCredit;

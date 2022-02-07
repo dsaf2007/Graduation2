@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "/Users/cdg/Graduation2/Graduation2/Graduation2.csproj": {}
+    "E:\\repos\\Graduation2\\Graduation2\\Graduation2.csproj": {}
   },
   "projects": {
-    "/Users/cdg/Graduation2/Graduation2/Graduation2.csproj": {
+    "E:\\repos\\Graduation2\\Graduation2\\Graduation2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/cdg/Graduation2/Graduation2/Graduation2.csproj",
+        "projectUniqueName": "E:\\repos\\Graduation2\\Graduation2\\Graduation2.csproj",
         "projectName": "Graduation2",
-        "projectPath": "/Users/cdg/Graduation2/Graduation2/Graduation2.csproj",
-        "packagesPath": "/Users/cdg/.nuget/packages/",
-        "outputPath": "/Users/cdg/Graduation2/Graduation2/obj/",
+        "projectPath": "E:\\repos\\Graduation2\\Graduation2\\Graduation2.csproj",
+        "packagesPath": "C:\\Users\\dsaf2\\.nuget\\packages\\",
+        "outputPath": "E:\\repos\\Graduation2\\Graduation2\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "/Users/cdg/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\dsaf2\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -38,9 +44,29 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "CSharpExtension.System.Collections": {
+              "target": "Package",
+              "version": "[1.0.0.364, )"
+            },
+            "ExcelDataReader": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
+            "ExcelDataReader.DataSet": {
+              "target": "Package",
+              "version": "[3.6.0, )"
+            },
             "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
               "target": "Package",
               "version": "[3.1.15, )"
+            },
+            "MySql.Data": {
+              "target": "Package",
+              "version": "[8.0.28, )"
+            },
+            "MySql.Data.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.22, )"
             }
           },
           "imports": [
@@ -53,6 +79,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.1.10, 3.1.10]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[3.1.22, 3.1.22]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[3.1.0, 3.1.0]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -61,7 +105,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.101/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
