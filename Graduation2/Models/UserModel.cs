@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using ExcelDataReader;
 using MySql.Data.MySqlClient;
 using Graduation2.Models;
+using System.Linq;
 
 namespace Graduation2.Models
 {
@@ -34,6 +35,8 @@ namespace Graduation2.Models
         public string keyword{get; set;}
         public string question_type{get; set;}
         public string value{get; set;}
+
+        public bool check {get;set;}
     }
     public class UserInfo // 취득교과목
     {
@@ -81,7 +84,8 @@ namespace Graduation2.Models
                         rule.Add(new TempRule{
                 keyword = reader["keyword"].ToString(),
                 question_type = reader["question_type"].ToString(),
-                value = reader["value"].ToString()
+                value = reader["value"].ToString(),
+                check = false
                 });
                     }
                 }
@@ -182,22 +186,43 @@ namespace Graduation2.Models
             {
                 if(temprule.question_type == "단수")
                 {
-                    if(temprule.value != keywordCreditPair[temprule.keyword]) // rule의 단수가 일치하지 않을 때
+                    if(Convert.ToInt32(temprule.value) != keywordCreditPair[temprule.keyword]) // rule의 단수가 일치하지 않을 때
                     {
                         //keyword 의 학점을 만족하지 않는다 error message 출력
+                    }
+                    else
+                    {
+                        temprule.check = true;
                     }
                 }
                 else if(temprule.question_type == "목록")
                 {
                     //하나의 String 형태인 value를 list 형태로 pharsing 후 비교
-                    List<string> valueList = temprule.value.Split('/');
-                    //List간 비교
-                    foreach(string value in valueList)
+                    //List<string> valueList = new List<string>();
+                    string[] valueArray = temprule.value.Split('/');
+                    List<string> valueList = new List<string>();
+                    foreach(string value in valueArray)
                     {
-                        foreach(string subject in keywordSubjectPairl[temprule.keyword])
-                        {
-                            
-                        }
+                        valueList.Add(value);
+                    }
+                    //List간 비교
+                    bool compare = false;
+                    List<string> subjectCodeList = new List<string>();
+                    foreach(UserSubject subject in keywordSubjectPair[temprule.keyword])
+                    {
+                        subjectCodeList.Add(subject.subjectCode);
+                    }
+
+                    var result = subjectCodeList.Where(x => valueList.Count(s => x.Contains(s)) == 0).ToList();
+
+                    if(result.IsEmpty() == false) // 필수교과목이 없을 때.
+                    {
+                        //에러메세지 출력
+                        temprule.check = false;
+                    }
+                    else
+                    {
+                        temprule.check = true;
                     }
                 }
             }
