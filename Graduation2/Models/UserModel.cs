@@ -47,18 +47,22 @@ namespace Graduation2.Models
         private int totalCredit;
 
         public static readonly string[] ruleKeywords = {
-            "공통교양", "기본소양", "수학", // MSC랑 수학과학전산학은 어떻게?
-            "과학", // 실험 포함? 따로?
-            "전산학", "전공", // 전공 안에 필수, 설계 등을 type 형태로 구분?
-            "전공필수", "전공설계",
-            "기초설계", // 얘네는 성적표에 '전공설계'로 나옴
-            "요소설계", "종합설계"
+            "공통교양", "기본소양", "일반교양",
+            "수학", "과학", "전산학", "과학실험", "MSC/BSM",
+            "전공", "전공필수", "전공전문", "전공설계",
+            "기초설계", "요소설계", "종합설계", // 얘네는 성적표에 '전공설계'로 나옴
+            "영어"
         };
 
         public UserInfo()
         {
           keywordSubjectPair = new Dictionary<string, List<UserSubject>>();
           keywordCreditPair = new Dictionary<string, int>();
+          foreach(string keyword in ruleKeywords)
+          {
+            keywordSubjectPair.Add(keyword, new List<UserSubject>());
+            keywordCreditPair.Add(keyword, 0);
+          }
           totalCredit = 0;
         }
 
@@ -89,7 +93,7 @@ namespace Graduation2.Models
         }
 
 
-        public void getUserSubject(string filename_)
+        public void getUserSubject(string studentScoreFile)
         {
             // using (var subjectStream = System.IO.File.Open(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             // {
@@ -110,7 +114,7 @@ namespace Graduation2.Models
             //     }
             // }
             List<UserSubject> userSubjects = new List<UserSubject>();
-            // userSubjects = ReadUserSubject(filename_);
+            userSubjects = readUserSubject(studentScoreFile);
 
             foreach (UserSubject userSubject in userSubjects)
             {
@@ -122,14 +126,29 @@ namespace Graduation2.Models
                 }
                 totalCredit += userSubject.credit;
             }
+            printUserSubjects();
+        }
+        // debug
+        public void printUserSubjects()
+        {
+            foreach(string key in keywordSubjectPair.Keys)
+            {
+              Console.WriteLine("<{0}> 총 {1}과목 {2}학점 수강",key, keywordSubjectPair[key].Count, keywordCreditPair[key]);
+              foreach(UserSubject subject in keywordSubjectPair[key])
+              {
+                Console.WriteLine("[{0}] {1}", subject.year+"-"+subject.semester, subject.subjectName);
+              }
+              Console.WriteLine();
+            }
         }
 
-        public List<UserSubject> ReadUserSubject(string filename_)
+        // 사용자 성적 파일 READ
+        public List<UserSubject> readUserSubject(string studentScoreFile)
         {
             List<UserSubject> temp = new List<UserSubject>();
 
             // 전체성적조회파일
-            using (var gradeStream = System.IO.File.Open(filename_, System.IO.FileMode.Open, System.IO.FileAccess.Read))
+            using (var gradeStream = System.IO.File.Open(studentScoreFile, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             {
                 using (var gradeReader = ExcelReaderFactory.CreateReader(gradeStream))
                 {
@@ -138,36 +157,36 @@ namespace Graduation2.Models
                     string tempSemester = "";
                     while (gradeReader.Read())
                     {
-                        string[] valueArray = new string[19];
-                        for (int i = 0; i < 19; i++)
+                        string[] valueArray = new string[20];
+                        for (int i = 0; i < 20; i++)
                         {
                             if (gradeReader.GetValue(i) == null)
                                 valueArray[i] = "";
-                            else
+                            else // 빈칸 제거
                                 valueArray[i] = Regex.Replace(gradeReader.GetValue(i).ToString(), @"\s", "");
+                        }
+                        if (valueArray[1] != "")
+                        {
+                            tempYear = valueArray[1];
                         }
                         if (valueArray[2] != "")
                         {
-                            tempYear = valueArray[2];
-                        }
-                        if (valueArray[3] != "")
-                        {
-                            tempSemester = valueArray[3];
+                            tempSemester = valueArray[2];
                         }
                         temp.Add(new UserSubject
                         {
                             year = tempYear, // 연도
                             semester = tempSemester, // 학기
-                            completionDiv = valueArray[4], // 이수구분 : 전공, 전필, 학기, 공교 등
-                            completionDivField = valueArray[5], // 이수구분영역 : 기초, 전문, 자연과학 등
-                            subjectCode = valueArray[6], // 학수번호
-                            subjectName = valueArray[8], // 과목명
-                            credit = Convert.ToInt32(valueArray[10]), // 학점
-                            engineeringFactor = valueArray[16], // 공학요소 : 전공, MSC, 전문교양
-                            engineeringFactorDetail = valueArray[17], // 공학세부요소 : 전공설계, 수학, 과학 등
-                            english = valueArray[18], // 원어강의 종류
-                            retake = valueArray[13] //재수강 여부
-                        });
+                            completionDiv = valueArray[3], // 이수구분 : 전공, 전필, 학기, 공교 등
+                            completionDivField = valueArray[4], // 이수구분영역 : 기초, 전문, 자연과학 등
+                            subjectCode = valueArray[5], // 학수번호
+                            subjectName = valueArray[7], // 과목명
+                            credit = Convert.ToInt32(Convert.ToDouble(valueArray[9])), // 학점
+                            engineeringFactor = valueArray[14], // 공학요소 : 전공, MSC, 전문교양
+                            engineeringFactorDetail = valueArray[15], // 공학세부요소 : 전공설계, 수학, 과학 등
+                            english = valueArray[16], // 원어강의 종류
+                            retake = valueArray[12] //재수강 여부
+                        }); 
                     }
                 }
             }

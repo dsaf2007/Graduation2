@@ -86,6 +86,9 @@ namespace Graduation2.Models
       {
         keywords.Add("영어");
       }
+      if(completionDiv == "일교") {
+        keywords.Add("일반교양");
+      }
       return keywords;
     }
   }
