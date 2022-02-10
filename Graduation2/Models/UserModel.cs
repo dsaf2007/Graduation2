@@ -174,6 +174,34 @@ namespace Graduation2.Models
             return temp;
         }
 
+        public void CheckRule()
+        {
+            //keywordSubjectPair, keywordCreditPair
+
+            foreach(TempRule temprule in rule)
+            {
+                if(temprule.question_type == "단수")
+                {
+                    if(temprule.value != keywordCreditPair[temprule.keyword]) // rule의 단수가 일치하지 않을 때
+                    {
+                        //keyword 의 학점을 만족하지 않는다 error message 출력
+                    }
+                }
+                else if(temprule.question_type == "목록")
+                {
+                    //하나의 String 형태인 value를 list 형태로 pharsing 후 비교
+                    List<string> valueList = temprule.value.Split('/');
+                    //List간 비교
+                    foreach(string value in valueList)
+                    {
+                        foreach(string subject in keywordSubjectPairl[temprule.keyword])
+                        {
+                            
+                        }
+                    }
+                }
+            }
+        }
         public List<string> addToList(List<string> list_, string input_)
         {
             List<string> temp = new List<string>();
