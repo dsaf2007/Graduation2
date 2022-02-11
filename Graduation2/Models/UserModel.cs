@@ -32,11 +32,11 @@ namespace Graduation2.Models
     */
     public class TempRule
     {
-        public string keyword{get; set;}
-        public string question_type{get; set;}
-        public string value{get; set;}
+        public string keyword { get; set; }
+        public string question_type { get; set; }
+        public string value { get; set; }
 
-        public bool check {get;set;}
+        public bool check { get; set; }
     }
     public class UserInfo // 취득교과목
     {
@@ -46,6 +46,8 @@ namespace Graduation2.Models
 
         private Dictionary<string, List<UserSubject>> keywordSubjectPair;
         private Dictionary<string, int> keywordCreditPair;
+
+        public Dictionary<string, string> errorMessageList;
 
         private int totalCredit;
 
@@ -60,9 +62,9 @@ namespace Graduation2.Models
 
         public UserInfo()
         {
-          keywordSubjectPair = new Dictionary<string, List<UserSubject>>();
-          keywordCreditPair = new Dictionary<string, int>();
-          totalCredit = 0;
+            keywordSubjectPair = new Dictionary<string, List<UserSubject>>();
+            keywordCreditPair = new Dictionary<string, int>();
+            totalCredit = 0;
         }
 
         public void getRule()
@@ -81,12 +83,14 @@ namespace Graduation2.Models
                         // temp.keyword=reader["keyword"].ToString();
                         // temp.question_type=reader["question_type"].ToString();
                         // temp.value = reader["value"].ToString();
-                        rule.Add(new TempRule{
-                keyword = reader["keyword"].ToString(),
-                question_type = reader["question_type"].ToString(),
-                value = reader["value"].ToString(),
-                check = false
-                });
+                        rule.Add(new TempRule
+                        {
+                            keyword = reader["keyword"].ToString(),
+                            question_type = reader["question_type"].ToString(),
+                            value = reader["value"].ToString(),
+                            check = false
+                        });
+                        errorMessageList.Add(reader["keyword"].ToString(), "");
                     }
                 }
             }
@@ -119,10 +123,10 @@ namespace Graduation2.Models
             foreach (UserSubject userSubject in userSubjects)
             {
                 List<string> keywordsOfSubject = userSubject.getKeywords();
-                foreach(string keyword in keywordsOfSubject)
+                foreach (string keyword in keywordsOfSubject)
                 {
-                  keywordSubjectPair[keyword].Add(userSubject);
-                  keywordCreditPair[keyword] += userSubject.credit;
+                    keywordSubjectPair[keyword].Add(userSubject);
+                    keywordCreditPair[keyword] += userSubject.credit;
                 }
                 totalCredit += userSubject.credit;
             }
@@ -182,40 +186,42 @@ namespace Graduation2.Models
         {
             //keywordSubjectPair, keywordCreditPair
 
-            foreach(TempRule temprule in rule)
+            foreach (TempRule temprule in rule)
             {
-                if(temprule.question_type == "단수")
+                if (temprule.question_type == "단수")
                 {
-                    if(Convert.ToInt32(temprule.value) != keywordCreditPair[temprule.keyword]) // rule의 단수가 일치하지 않을 때
+                    if (Convert.ToInt32(temprule.value) != keywordCreditPair[temprule.keyword]) // rule의 단수가 일치하지 않을 때
                     {
                         //keyword 의 학점을 만족하지 않는다 error message 출력
+                        string errMessage = temprule.keyword + "가" + keywordCreditPair[temprule.keyword] + "로 기준인" + temprule.value +"를 만족하지 않습니다.";
+                        errorMessageList[temprule.keyword] = errMessage;
                     }
                     else
                     {
                         temprule.check = true;
                     }
                 }
-                else if(temprule.question_type == "목록")
+                else if (temprule.question_type == "목록")
                 {
                     //하나의 String 형태인 value를 list 형태로 pharsing 후 비교
                     //List<string> valueList = new List<string>();
                     string[] valueArray = temprule.value.Split('/');
                     List<string> valueList = new List<string>();
-                    foreach(string value in valueArray)
+                    foreach (string value in valueArray)
                     {
                         valueList.Add(value);
                     }
                     //List간 비교
                     bool compare = false;
                     List<string> subjectCodeList = new List<string>();
-                    foreach(UserSubject subject in keywordSubjectPair[temprule.keyword])
+                    foreach (UserSubject subject in keywordSubjectPair[temprule.keyword])
                     {
                         subjectCodeList.Add(subject.subjectCode);
                     }
 
                     var result = subjectCodeList.Where(x => valueList.Count(s => x.Contains(s)) == 0).ToList();
 
-                    if(result.IsEmpty() == false) // 필수교과목이 없을 때.
+                    if (result.IsEmpty() == false) // 필수교과목이 없을 때.
                     {
                         //에러메세지 출력
                         temprule.check = false;
