@@ -1,14 +1,10 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
-<head>
-    @* <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin"anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> *@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+﻿<!DOCTYPE html>
+<html>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    
 <body>
-    <table border="1" width="1000">
+    <table class="table table-sm" id="major" border="1" width="1000">
         <tr>
             <th align ="center" colspan="6" width="1000" bgcolor="D5D5D5">전공</th>
         </tr>
@@ -16,13 +12,38 @@
             <th bgcolor = "D5D5D5"> 이수구분</th>
             <th bgcolor = "D5D5D5"> 응답유형</th>
             <th colspan = "6" width  = "800" bgcolor = "D5D5D5">학수번호 쉼표로 구분하여 입력 (CSE1234, CSE2345 ...)</th>
+            <th>
+                <button class = "add" onClick="userAdd()">Add</button>
+            </th>
         </tr>
         <tr>
             <td>
-                <input size="40">
+                <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      이수구분
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">전공</a></li>
+                      <li><a class="dropdown-item" href="#">전공필수</a></li>
+                      <li><a class="dropdown-item" href="#">전공전문</a></li>
+                      <li><a class="dropdown-item" href="#">기초설계</a></li>
+                      <li><a class="dropdown-item" href="#">요소설계</a></li>
+                      <li><a class="dropdown-item" href="#">종합설계</a></li>
+                      <li><a class="dropdown-item" href="#">설계</a></li>
+                    </ul>
+                </div>
             </td>
             <td>
-                <input size="40">
+                <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      응답유형
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">학점</a></li>
+                      <li><a class="dropdown-item" href="#">과목</a></li>
+                      <li><a class="dropdown-item" href="#">O/X</a></li>
+                    </ul>
+                </div>
             </td> 
             <td colspan = "6" width  = "100">
                 <input size="50">
@@ -52,21 +73,47 @@
         </tr>
     </table>
         <br>
-    <table border="1" width="1000">
+    <table class="table table-sm" id="major" border="1" width="1000">
         <tr>
-            <th colspan = "6" bgcolor = "D5D5D5">교양</th>
+            <th align ="center" colspan="6" width="1000" bgcolor="D5D5D5">교양</th>
         </tr>
         <tr>
             <th bgcolor = "D5D5D5"> 이수구분</th>
             <th bgcolor = "D5D5D5"> 응답유형</th>
-            <th colspan = "6" width  = "800" bgcolor = "D5D5D5">학수번호 쉼표로 구분하여 입력 (ICG1234, PRI2345 ...)</th>
+            <th colspan = "6" width  = "800" bgcolor = "D5D5D5">학수번호 쉼표로 구분하여 입력 (IGC1000, PRI2000 ...)</th>
+            <th>
+                <input type='button' 
+                    value='Add' 
+                    onclick='addMinor()' />
+            </th>
         </tr>
         <tr>
             <td>
-                <input size="40">
+                <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      이수구분
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">공통교양</a></li>
+                      <li><a class="dropdown-item" href="#">기본소양</a></li>
+                      <li><a class="dropdown-item" href="#">수학</a></li>
+                      <li><a class="dropdown-item" href="#">과학</a></li>
+                      <li><a class="dropdown-item" href="#">전산학</a></li>
+                      <li><a class="dropdown-item" href="#">MSC/BSM</a></li>
+                    </ul>
+                </div>
             </td>
             <td>
-                <input size="40">
+                <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      응답유형
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">학점</a></li>
+                      <li><a class="dropdown-item" href="#">과목</a></li>
+                      <li><a class="dropdown-item" href="#">O/X</a></li>
+                    </ul>
+                </div>
             </td> 
             <td colspan = "6" width  = "100">
                 <input size="50">
@@ -96,7 +143,7 @@
         </tr>
     </table>
     <br>
-    <table border="1" width="1000">
+    <table class="table table-sm" id="grad" border="1" width="1000">
 
         <tr>
             <th align ="center" colspan="6" width="1000" bgcolor="D5D5D5">졸업요건</th>
@@ -105,13 +152,38 @@
             <th bgcolor = "D5D5D5">이수구분</th>
             <th bgcolor = "D5D5D5">응답유형</th>
             <th colspan = "6" width  = "800" bgcolor = "D5D5D5">학점입력</th>
+            <th>
+                <input type='button' 
+                    value='Add' 
+                    onclick='addGrad()' />
+            </th>
         </tr>
         <tr>
             <td>
-                <input size="40">
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      이수구분
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">영어강의이수</a></li>
+                      <li><a class="dropdown-item" href="#">외국어패스제</a></li>
+                      <li><a class="dropdown-item" href="#">졸업논문</a></li>
+                      <li><a class="dropdown-item" href="#">졸업시험</a></li>
+                      <li><a class="dropdown-item" href="#">종 취득학점</a></li>
+                      <li><a class="dropdown-item" href="#">평점 평균</a></li>
+                    </ul>
+                </div>
             </td>
             <td>
-                <input size="40">
+                <div class="dropdown">
+                <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      응답유형
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <li><a class="dropdown-item" href="#">학점</a></li>
+                      <li><a class="dropdown-item" href="#">O/X</a></li>
+                    </ul>
+                </div>
             </td> 
             <td colspan = "6" width  = "100">
                 <input size="50">
@@ -140,4 +212,82 @@
             </td>
         </tr>
     </table>
+    <script>
+        function addMajor() {
+            // table element 찾기
+            const table = document.getElementById('major');
+            
+            // 새 행(Row) 추가
+            const newRow = table.insertRow();
+            
+            // 새 행(Row)에 Cell 추가
+            const newCell1 = newRow.insertCell(0);
+            const newCell2 = newRow.insertCell(1);
+            const newCell3 = newRow.insertCell(2);
+            
+            // Cell에 텍스트 추가
+            newCell1.innerText = '새 항목';
+            newCell2.innerText = '새 항목';
+        }
+
+        function addMinor() {
+            // table element 찾기
+            const table = document.getElementById('minor');
+            
+            // 새 행(Row) 추가
+            const newRow = table.insertRow();
+            
+            // 새 행(Row)에 Cell 추가
+            const newCell1 = newRow.insertCell(0);
+            const newCell2 = newRow.insertCell(1);
+            const newCell3 = newRow.insertCell(2);
+            
+            // Cell에 텍스트 추가
+            newCell1.innerText = '새 항목';
+            newCell2.innerText = '새 항목';
+        }
+
+        // function addGrad() {
+        //     // table element 찾기
+        //     const table = document.getElementById('grad');
+            
+        //     // 새 행(Row) 추가
+        //     const newRow = table.insertRow();
+            
+        //     // 새 행(Row)에 Cell 추가
+        //     const newCell1 = newRow.insertCell(0);
+        //     const newCell2 = newRow.insertCell(1);
+        //     const newCell3 = newRow.insertCell(2);
+            
+        //     // Cell에 텍스트 추가
+        //     newCell1.innerHTML = "<tr> <td><div class=dropdown><button class=btn btn-secondary dropdown-toggle type=button id=dropdownMenuButton1 data-bs-toggle=dropdown aria-expanded="false">이수구분</button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"><li><a class="dropdown-item" href="#">공통교양</a></li><li><a class="dropdown-item" href="#">기본소양</a></li><li><a class="dropdown-item" href="#">수학</a></li><li><a class="dropdown-item" href="#">과학</a></li><li><a class="dropdown-item" href="#">전산학</a></li><li><a class=dropdown-item href=#>MSC/BSM</a></li></ul></div></td><td><div class=dropdown><button class=btn btn-secondary dropdown-toggle type=button id=dropdownMenuButton1 data-bs-toggle=dropdown aria-expanded=false>응답유형</button><ul class=dropdown-menu aria-labelledby=dropdownMenuButton1><li><a class=dropdown-item href=#>학점</a></li><li><a class=dropdown-item href=#>과목</a></li><li><a class=dropdown-item href=#>O/X</a></li></ul></div></td> <td colspan = 6 width = 100><input size=50></td></tr>;
+        //     newCell2.innerText = '새 항목';
+        // }
+
+        const userAdd = ()=> {  
+
+        var trCnt = document.getElementsByTagName('tr').length;
+        var inner = "";
+        console.log(trCnt)
+        if(baseCamp != 0){
+            trCnt = baseCamp;
+        } 
+        @* if(trCnt == 11){
+            $('#no1').hide();
+        } *@
+        
+        if(trCnt <= 11) {
+            inner += '<tr>'
+            inner += '  <td><div class="dropdown"><button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">이수구분</button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"><li><a class="dropdown-item" href="#">공통교양</a></li><li><a class="dropdown-item" href="#">기본소양</a></li><li><a class="dropdown-item" href="#">수학</a></li><li><a class="dropdown-item" href="#">과학</a></li><li><a class="dropdown-item" href="#">전산학</a></li><li><a class="dropdown-item" href="#">MSC/BSM</a></li></ul></div></td>';
+            inner += '  <td><div class="dropdown"><button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">응답유형</button><ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1"><li><a class="dropdown-item" href="#">학점</a></li><li><a class="dropdown-item" href="#">과목</a></li><li><a class="dropdown-item" href="#">O/X</a></li></ul></div></td>';
+            inner += '  <td colspan = "6" width  = "100"><input size="50"></td>';
+            inner += '</tr>';
+        }
+@* 
+        $('#tbHead').after(inner); // 헤더 아래 추가
+
+        } *@
+
+    </script>
 </body>
+</html>
