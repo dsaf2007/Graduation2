@@ -680,7 +680,6 @@ D:/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.genruntimec
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.TagHelpers.output.cache
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.RazorCoreGenerate.cache
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Razor/Views/Home/Index.cshtml.g.cs
-/Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Razor/Views/Home/Privacy.cshtml.g.cs
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Razor/Views/Shared/Error.cshtml.g.cs
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Razor/Views/Shared/_Layout.cshtml.g.cs
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Razor/Views/Shared/_ValidationScriptsPartial.cshtml.g.cs
