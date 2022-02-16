@@ -39,7 +39,7 @@ namespace Graduation2.Controllers
             string gradeFile = Path.Combine(baseFilePath, "student_score.xlsx");
 
             UserInfo userInfo = new UserInfo();
-            userInfo.getUserSubject(gradeFile); // 수강 과목 리스트 및 이수 학점
+            userInfo.GetUserSubject(gradeFile); // 수강 과목 리스트 및 이수 학점
 
             return View();
         }

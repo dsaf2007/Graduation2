@@ -22,7 +22,10 @@ namespace Graduation2.Models
       public string semester {get;set;}
       public int designCredit {get;set;} // 설계학점
 
-      public Subject() {}
+      public bool IsSameSubject(Subject subject)
+      {
+        return subjectCode.Equals(subject.subjectCode);
+      }
   }
 
   // todo 기초설계 요소설계 관련 수동 추가해야함
@@ -35,9 +38,7 @@ namespace Graduation2.Models
     public string english {get; set;} // 원어강의종류
     public string retake {get; set;} // 재수강구분
 
-    public UserSubject() {}
-
-    public List<string> getKeywords() 
+    public List<string> GetKeywords() 
     {
       List<string> keywords = new List<string>();
       if (engineeringFactorDetail == "기초교양(교필)")

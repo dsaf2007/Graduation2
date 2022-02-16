@@ -71,8 +71,61 @@ namespace Graduation2.Models
           totalCredit = 0;
         }
 
-        public void getRule()
+        public void GetRule()
         {
+            // test
+            List<Rule> testRules = new List<Rule>();
+            // 드롭다운 응답유형: 학점 / 과목 / OX
+            string replyType = "학점";
+            List<Subject> testSubjects1 = new List<Subject>() 
+            {
+              new Subject {
+                subjectCode = "PRI1234",
+                subjectName = "확률과통계학",
+                credit = 3,
+                year = "2021",
+                semester = "1학기",
+              },
+              new Subject {
+                subjectCode = "PRI1235",
+                subjectName = "공학수학1",
+                credit = 3,
+                year = "2021",
+                semester = "1학기",
+              },
+            };
+            List<Subject> testSubjects2 = new List<Subject>() 
+            {
+              new Subject {
+                subjectCode = "PRI1234",
+                subjectName = "확률과통계학",
+                credit = 3,
+                year = "2021",
+                semester = "1학기",
+              },
+              new Subject {
+                subjectCode = "PRI1235",
+                subjectName = "공학수학1",
+                credit = 3,
+                year = "2021",
+                semester = "1학기",
+              },
+            };
+            // CheckStrategy checkStrategy = getCheckStrategy(replyType);
+            // subject, credit pair <- UserInfo
+            CheckStrategy checkStrategy = new MultiValueChecker(keywordSubjectPair, keywordCreditPair);
+            // 드롭다운 값에 따라 룰 멤버변수 변경해야함
+            Rule r1 = new Rule(checkStrategy, "교양", "수학", "3", "수학 필수 과목 입력", null, testSubjects1);
+            Rule r2 = new Rule(checkStrategy, "전공", "전공필수", "3", "전공 필수 과목 입력", null, testSubjects2);
+            testRules.Add(r1);
+            testRules.Add(r2);
+            // // ChecRule() 따로 빼야함
+            // foreach(Rule rule in testRules)
+            // {
+            //   rule.CheckRule();
+            // }
+            // 220214 ____________________|
+
             using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
             {
                 string selectQuery = "SELECT * FROM rule";
@@ -101,7 +154,7 @@ namespace Graduation2.Models
         }
 
 
-        public void getUserSubject(string studentScoreFile)
+        public void GetUserSubject(string studentScoreFile)
         {
             // using (var subjectStream = System.IO.File.Open(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
             // {
@@ -122,11 +175,11 @@ namespace Graduation2.Models
             //     }
             // }
             List<UserSubject> userSubjects = new List<UserSubject>();
-            userSubjects = readUserSubject(studentScoreFile);
+            userSubjects = ReadUserSubject(studentScoreFile);
 
             foreach (UserSubject userSubject in userSubjects)
             {
-                List<string> keywordsOfSubject = userSubject.getKeywords();
+                List<string> keywordsOfSubject = userSubject.GetKeywords();
                 foreach (string keyword in keywordsOfSubject)
                 {
                     keywordSubjectPair[keyword].Add(userSubject);
@@ -134,10 +187,10 @@ namespace Graduation2.Models
                 }
                 totalCredit += userSubject.credit;
             }
-            printUserSubjects();
+            PrintUserSubjects();
         }
         // debug
-        public void printUserSubjects()
+        public void PrintUserSubjects()
         {
             foreach(string key in keywordSubjectPair.Keys)
             {
@@ -151,7 +204,7 @@ namespace Graduation2.Models
         }
 
         // 사용자 성적 파일 READ
-        public List<UserSubject> readUserSubject(string studentScoreFile)
+        public List<UserSubject> ReadUserSubject(string studentScoreFile)
         {
             List<UserSubject> temp = new List<UserSubject>();
 
@@ -205,8 +258,8 @@ namespace Graduation2.Models
         {
           /*
             // refactoring
-            tempRule.checkRule();
-            
+            tempRule.CheckRule();
+
           */
             //keywordSubjectPair, keywordCreditPair
             foreach (TempRule temprule in rule)

@@ -10,8 +10,9 @@ using Graduation2.Models;
 // using ExcelDataReader;
 // using MySql.Data.MySqlClient;
 
-namespace Rule.Models
+namespace Graduation2.Models
 {
+    // 드롭다운 값에 따라 룰 멤버변수 변경해야함
     public class Rule
     {
         // 구분 (교양, 전공, 졸업요건, 예외)
@@ -22,12 +23,13 @@ namespace Rule.Models
         public string sequenceNumber { get; set; }
         // 질문
         public string question { get; set; }
-        // 엑셀 입력 데이터
+        // 엑셀 입력 데이터 -> 웹버전으로 바뀌어야함
         public string singleInput { get; set; }
-        // rule passed
-        public bool isPassed { get; set; }
-
         public List<Subject> requiredSubjects { get; set; } 
+        // rule 패스 여부
+        public bool isPassed { get; set; }
+        // 전체 필수?
+        public bool shouldTakeAll {get; set;}
       
         public CheckStrategy checkStrategy { get; set; }
 
@@ -35,22 +37,24 @@ namespace Rule.Models
 
         public Rule(CheckStrategy checkStrategy,
                     string type, string keyword, string sequenceNumber, string question, 
-                    string singleInput = "", List<Subject> requiredSubjects = null
+                    string singleInput="", List<Subject> requiredSubjects=null, bool shouldTakeAll=false
                     ) 
         {
           isPassed = false;
           this.checkStrategy = checkStrategy;
+          this.checkStrategy.rule = this;
           this.type = type;
           this.keyword = keyword;
           this.sequenceNumber = sequenceNumber;
           this.question = question;
           this.singleInput = singleInput;
           this.requiredSubjects = requiredSubjects;
+          this.shouldTakeAll = shouldTakeAll;
         }
         
         public void CheckRule() {
           isPassed = checkStrategy.CheckRule();
-          errMessage = checkStrategy.errMessage;
+          errMessage = isPassed ? "" : checkStrategy.errMessage;
         }
     }
     public abstract class CheckStrategy
@@ -62,17 +66,16 @@ namespace Rule.Models
 
       public abstract bool CheckRule();
     }
+
     public class NumberValueChecker : CheckStrategy
     {
       public double userValue {get; set;}
       public double requiredValue {get; set;}
 
-      public NumberValueChecker(Rule rule, 
-                                Dictionary<string, List<UserSubject>> _userSubjectPair,
-                                Dictionary<string, int> _userCreditPair,
+      public NumberValueChecker(Dictionary<string, List<UserSubject>> userSubjectPair,
+                                Dictionary<string, int> userCreditPair,
                                 double userValue, double requiredValue)
       {
-        this.rule = rule;
         this.userSubjectPair = userSubjectPair;
         this.userCreditPair = userCreditPair;
         this.userValue = userValue;
@@ -86,7 +89,8 @@ namespace Rule.Models
         requiredValue = Convert.ToDouble(rule.singleInput);
         if (userValue < requiredValue)
         {
-          errMessage = String.Format("[{0}] 수강학점:{1}, 졸업요건:{2}", keyword, userValue, requiredValue);
+          errMessage = String.Format("[{0}] 현재 수강학점: {1}, 졸업요건: {2}, 필요학점: {3}",
+                                      keyword, userValue, requiredValue, requiredValue-userValue);
           return false;
         }
         return true;
@@ -95,16 +99,14 @@ namespace Rule.Models
     public class OXValueChecker : CheckStrategy
     {
       public string userOX;
-      public OXValueChecker(Rule _rule, 
-                                Dictionary<string, List<UserSubject>> _userSubjectPair,
-                                Dictionary<string, int> _userCreditPair,
-                                string _userOX)
+      public OXValueChecker(Dictionary<string, List<UserSubject>> userSubjectPair,
+                            Dictionary<string, int> userCreditPair,
+                            string userOX)
       {
-        rule = _rule;
-        userSubjectPair = _userSubjectPair;
-        userCreditPair = _userCreditPair;
+        this.userSubjectPair = userSubjectPair;
+        this.userCreditPair = userCreditPair;
         // OX 판별하는 클래스에 추가되는 데이터
-        userOX = _userOX;
+        this.userOX = userOX;
       }
       public override bool CheckRule() 
       {
@@ -132,35 +134,40 @@ namespace Rule.Models
           return requiredCount;
         }
       }
-      // public bool takeAll { get; set; }
 
-      public MultiValueChecker(Rule _rule, 
-                                Dictionary<string, List<UserSubject>> _userSubjectPair,
-                                Dictionary<string, int> _userCreditPair
+      public MultiValueChecker(Dictionary<string, List<UserSubject>> userSubjectPair,
+                               Dictionary<string, int> userCreditPair
                               )
       {
-        this.rule = rule;
         this.userSubjectPair = userSubjectPair;
         this.userCreditPair = userCreditPair;
-        // takeAll = rule.question.Contains("필수")? true : false;
       }
       public override bool CheckRule()
       {
         matches = 0;
         string keyword = rule.keyword;
-        List<Subject> requiredSubjects = rule.requiredSubjects;
         List<UserSubject> userSubjects = userSubjectPair[keyword];
+        List<Subject> requiredSubjects = rule.requiredSubjects;
+        List<string> neededSubjects = requiredSubjects.Select(subject => subject.subjectCode).ToList<string>();
 
         foreach(Subject reqSubject in requiredSubjects) {
           foreach(UserSubject userSubject in userSubjects) {
-            if (reqSubject.subjectCode.Equals(userSubject)) {
+            if (reqSubject.IsSameSubject(userSubject)) {
               matches += 1;
+              neededSubjects.Remove(userSubject.subjectCode);
+              break;
             }
           }
         }
         if (matches < requiredCount)
         {
-          errMessage = String.Format("[{0}] 수강과목수:{1}, 졸업요건:{2}과목 수강", keyword, matches, requiredCount);
+          string neededSubjectsString = String.Join<string>(",", neededSubjects);
+          errMessage = String.Format("[{0}] 현재 수강과목수: {1}, 졸업요건: 총 {2}과목 수강, 필요 수강과목수: {3}",
+                                      keyword, matches, requiredCount, requiredCount-matches);
+
+          string notice = rule.shouldTakeAll? "필요과목" : "수강가능과목";
+          errMessage += String.Format("\n{0}: {1}", notice, neededSubjectsString);
+          
           return false;
         }
         return true;
