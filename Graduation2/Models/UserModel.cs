@@ -49,6 +49,9 @@ namespace Graduation2.Models
 
         public Dictionary<string, string> errorMessageList;
 
+        private int applicationYear ="2016"; //temp 실제로는 입력 받아야함.
+        private string advancedStatus = "N"; //실제로는 입력 받아야함.
+
         private int totalCredit;
 
         private string[] basicList = new string[] { "PRI4041", "PRI4043", "PRI4048", "PRI4040" }; //기본소양 교과목 목록
@@ -341,7 +344,8 @@ namespace Graduation2.Models
                             {
                                 this.basicClasses.Remove(new UserSubject() { classCode = basicSubject.classCode });
                                 this.basicLibCredit -= Convert.ToInt32(basicSubject.credit);
-                                exceptionList.Add("미 인정 기본 소양 교과목 수강(" + basicSubject.className + ")");
+                                //예외 처리 오류 메시지 입력
+                                //exceptionList.Add("미 인정 기본 소양 교과목 수강(" + basicSubject.className + ")");
                             }
                         }
                     }
@@ -351,19 +355,20 @@ namespace Graduation2.Models
             //이산수학 이산구조 수강
             if (Convert.ToInt32(this.applicationYear) >= 2017) //https://cse.dongguk.edu/?page_id=799&uid=1480&mod=document
             {
+                //advancedStatus(심화과정 여부) 입력 받아야함.
                 if (this.advancedStatus == "N" && this.applicationYear == "2017")//일반과정
                 {
                     bool CSE2026 = false;
                     bool PRI4027 = false;
                     UserSubject tempSubject = new UserSubject();
-                    foreach (UserSubject majorEssential in majorEssentialList)
+                    foreach (UserSubject majorEssential in this.keywordSubjectPair["전문"])
                     {
                         if (majorEssential.classCode == "CSE2026")
                         {
                             CSE2026 = true;
                         }
                     }
-                    foreach (UserSubject msc in mscClasses)
+                    foreach (UserSubject msc in this.keywordSubjectPair["MSC"])
                     {
                         if (msc.classCode == "PRI4027" && msc.year == "2017")
                         {
@@ -373,10 +378,11 @@ namespace Graduation2.Models
                     }
                     if (CSE2026 == false && PRI4027 == true)
                     {
-                        mscClasses.Remove(new UserSubject() { classCode = "PRI4027" });
+                        keywordSubjectPair["MSC"].Remove(new UserSubject() { classCode = "PRI4027" });
                         tempSubject.classCode = "CSE2026"; // 학수번호만 변경. 교과목명 유지
-                        majorEssentialList.Add(tempSubject);
-                        exceptionList.Add("이산구조 교과목 이산수학으로 대체 인정");
+                        keywordSubjectPair["전문"].Add(tempSubject);
+                        //예외 처리 오류 메시지 입력
+                        //exceptionList.Add("이산구조 교과목 이산수학으로 대체 인정");
                     }
                 }
             }
@@ -386,20 +392,20 @@ namespace Graduation2.Models
             bool design2Status = false;
             bool fieldPractice = false;
 
-            foreach (UserSubject majorClassList in majorEssentialList)
+            foreach (UserSubject majorEssential in this.keywordSubjectPair["전문"])
             {
-                if (majorClassList.classCode == "CSE4066")//예외 처리할 과목명 일치시
+                if (majorEssential.classCode == "CSE4066")//예외 처리할 과목명 일치시
                 {
-                    design1 = majorClassList;
+                    design1 = majorEssential;
                     design1Status = true;
                 }
-                if (majorClassList.classCode == "CSE4067")
+                if (majorEssential.classCode == "CSE4067")
                 {
-                    design2 = majorClassList;
+                    design2 = majorEssential;
                     design2Status = true;
                 }
             }
-            foreach (UserSubject majorClassList in majorClasses)
+            foreach (UserSubject majorClassList in this.keywordSubjectPair["전공"])//현장실습
             {
                 if ((majorClassList.classCode == "ITS4003") || (majorClassList.classCode == "ITS4004"))
                 {
@@ -408,22 +414,26 @@ namespace Graduation2.Models
             }
             if (design1Status == false && fieldPractice == true)
             {
-                exceptionList.Add("종합설계1의 현장실습 대체 여부를 확인하십시오.");
+                //예외처리 오류 메시지 입력
+                //exceptionList.Add("종합설계1의 현장실습 대체 여부를 확인하십시오.");
             }
             else if (design2Status == false && fieldPractice == true)
             {
-                exceptionList.Add("종합설계2의 현장실습 대체 여부를 확인하십시오.");
+                //예외처리 오류 메시지 입력
+                //exceptionList.Add("종합설계2의 현장실습 대체 여부를 확인하십시오.");
             }
 
             if ((Convert.ToInt32(design1.year) > Convert.ToInt32(design2.year)) && Convert.ToInt32(design2.year) != 0)
             {
-                exceptionList.Add("종합설계를 순차적으로 이수하지 않았습니다.");
+                //예외처리 오류 메시지 입력
+                //exceptionList.Add("종합설계를 순차적으로 이수하지 않았습니다.");
             }
             else if (Convert.ToInt32(design1.year) == Convert.ToInt32(design2.year))
             {
                 if (design1.semester == "2학기" && design2.semester == "1학기")
                 {
-                    exceptionList.Add("종합설계를 순차적으로 이수하지 않았습니다.");
+                    //예외처리 오류 메시지 입력
+                    //exceptionList.Add("종합설계를 순차적으로 이수하지 않았습니다.");
                 }
                 //같은 학기에 동시에 이수 한 경우 ??
             }
@@ -433,7 +443,7 @@ namespace Graduation2.Models
             ////동일유사전공교과목 처리
             List<SimillarMajor> simillarList = new List<SimillarMajor>();
             List<DiffMajor> diffMajorList = new List<DiffMajor>();
-            using (MySqlConnection connection = new MySqlConnection("Server=118.67.128.31;Port=5555;Database=test;Uid=CSDC;Pwd=1q2w3e4r"))
+            using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163;Port=5555;Database=test;Uid=CSDC;Pwd=1q2w3e4r"))
             {
                 string selectQuery = "SELECT * from SIMILLAR";
 
@@ -509,18 +519,20 @@ namespace Graduation2.Models
                     //}
                     connection.Close();
                 }
-                temp = this.majorClasses;
+                temp = this.keywordSubjectPair["전공"];
 
-                foreach (UserSubject major in majorEssentialList)
+                foreach (UserSubject major in this.keywordSubjectPair["전문"])
                 {
                     foreach (SimillarMajor simillar in simillarList)
                     {
                         if (major.className == simillar.currClassName)// 수강한 과목이 이전 전공명과 동일 할 경우(ex. 14년도 교육과정 적용 학생이 주니어디자인프로젝트가 아닌 공개sw수강)
                         {
                             // Console.WriteLine("교육과정 적용년도 " + major.);
+                            //applicationYear 입력 받아야함
                             if (Convert.ToInt32(this.applicationYear) <= simillar.prevClassEndYear && Convert.ToInt32(this.applicationYear) >= simillar.prevClassStartYear)
                             {
-                                exceptionList.Add(simillar.prevClassName + "과목이 동일유사전공교과목인 " + major.className + " 으로 수강되었는지 확인하십시오.");
+                                //예외처리 오류 메시지 입력
+                               // exceptionList.Add(simillar.prevClassName + "과목이 동일유사전공교과목인 " + major.className + " 으로 수강되었는지 확인하십시오.");
                             }
                         }
                     }
@@ -529,25 +541,25 @@ namespace Graduation2.Models
 
                 //타 전공 동일 유사 교과목 확인.
 
-                foreach (UserSubject subject in this.fullList)
-                {
-                    foreach (DiffMajor different in diffMajorList)
-                    {
-                        if (subject.classCode == different.otherClassCode)//유사교과목이 수강 된 경우
-                        {
-                            foreach (UserSubject majorSubject in this.majorClasses)
-                            {
-                                if (majorSubject.classCode == different.classCode)// 유사교과목과 동일한 전공 수강여부 확인
-                                {
-                                    if (Convert.ToInt32(majorSubject.year) <= different.endYear && Convert.ToInt32(majorSubject.year) >= different.startYear)
-                                    {
-                                        exceptionList.Add(majorSubject.className + "과목이 타과 동일유사교과목인 " + different.otherClassName + "과 중복 수강 되었습니다.");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                // foreach (UserSubject subject in this.fullList)
+                // {
+                //     foreach (DiffMajor different in diffMajorList)
+                //     {
+                //         if (subject.classCode == different.otherClassCode)//유사교과목이 수강 된 경우
+                //         {
+                //             foreach (UserSubject majorSubject in this.majorClasses)
+                //             {
+                //                 if (majorSubject.classCode == different.classCode)// 유사교과목과 동일한 전공 수강여부 확인
+                //                 {
+                //                     if (Convert.ToInt32(majorSubject.year) <= different.endYear && Convert.ToInt32(majorSubject.year) >= different.startYear)
+                //                     {
+                //                         exceptionList.Add(majorSubject.className + "과목이 타과 동일유사교과목인 " + different.otherClassName + "과 중복 수강 되었습니다.");
+                //                     }
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
             }
         }
 

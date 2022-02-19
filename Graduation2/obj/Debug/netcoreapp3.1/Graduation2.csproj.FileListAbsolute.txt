@@ -734,3 +734,14 @@ D:/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.genruntimec
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/bin/Debug/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/bin/Debug/netcoreapp3.1/System.Security.Cryptography.ProtectedData.dll
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.csproj.AssemblyReference.cache
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.GeneratedMSBuildEditorConfig.editorconfig
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.AssemblyInfoInputs.cache
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.AssemblyInfo.cs
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.csproj.CoreCompileInputs.cache
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.MvcApplicationPartsAssemblyInfo.cs
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.MvcApplicationPartsAssemblyInfo.cache
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.RazorAssemblyInfo.cache
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.RazorAssemblyInfo.cs
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.dll
+/Users/cdg/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.pdb
