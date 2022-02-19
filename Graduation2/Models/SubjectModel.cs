@@ -93,4 +93,25 @@ namespace Graduation2.Models
       return keywords;
     }
   }
+
+   public class SimillarMajor
+    {
+        public string currSubjectName { get;set; }
+        public int currSubjectStartYear { get; set; }
+        public string prevSubjectName { get; set; }
+        public int prevSubjectStartYear { get; set; }
+        public int prevSubjectEndYear { get; set; }
+    }
+
+    public class DiffMajor
+    {
+        public int startYear { get; set; }
+        public int endYear { get; set; }
+        public string subjectCode { get; set; }
+        public string subjectName { get; set; }
+        public string otherMajor { get; set; }
+        public string otherSubjectCode { get; set; }
+        public string otherSubjectName { get; set; }
+    }
+
 }

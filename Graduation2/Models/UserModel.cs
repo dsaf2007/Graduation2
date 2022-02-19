@@ -49,7 +49,7 @@ namespace Graduation2.Models
 
         public Dictionary<string, string> errorMessageList;
 
-        private int applicationYear ="2016"; //temp 실제로는 입력 받아야함.
+        private string applicationYear ="2016"; //temp 실제로는 입력 받아야함.
         private string advancedStatus = "N"; //실제로는 입력 받아야함.
 
         private int totalCredit;
@@ -336,14 +336,14 @@ namespace Graduation2.Models
             {
                 foreach (UserSubject basicSubject in temp)
                 {
-                    if (basicList_ == basicSubject.classCode)//예외 처리할 과목명 일치시
+                    if (basicList_ == basicSubject.subjectCode)//예외 처리할 과목명 일치시
                     {
                         if (Convert.ToInt32(basicSubject.year) >= 2021)// 수강년도가 2021년 이후
                         {
                             if (basicSubject.retake != "NEW재수강")//재수강이 아닐경우
                             {
-                                this.basicClasses.Remove(new UserSubject() { classCode = basicSubject.classCode });
-                                this.basicLibCredit -= Convert.ToInt32(basicSubject.credit);
+                                this.keywordSubjectPair["기본소양"].Remove(new UserSubject() { subjectCode = basicSubject.subjectCode });
+                                this.keywordCreditPair["기본소양"] -= Convert.ToInt32(basicSubject.credit);
                                 //예외 처리 오류 메시지 입력
                                 //exceptionList.Add("미 인정 기본 소양 교과목 수강(" + basicSubject.className + ")");
                             }
@@ -363,14 +363,14 @@ namespace Graduation2.Models
                     UserSubject tempSubject = new UserSubject();
                     foreach (UserSubject majorEssential in this.keywordSubjectPair["전문"])
                     {
-                        if (majorEssential.classCode == "CSE2026")
+                        if (majorEssential.subjectCode == "CSE2026")
                         {
                             CSE2026 = true;
                         }
                     }
                     foreach (UserSubject msc in this.keywordSubjectPair["MSC"])
                     {
-                        if (msc.classCode == "PRI4027" && msc.year == "2017")
+                        if (msc.subjectCode == "PRI4027" && msc.year == "2017")
                         {
                             PRI4027 = true;
                             tempSubject = msc;
@@ -378,8 +378,8 @@ namespace Graduation2.Models
                     }
                     if (CSE2026 == false && PRI4027 == true)
                     {
-                        keywordSubjectPair["MSC"].Remove(new UserSubject() { classCode = "PRI4027" });
-                        tempSubject.classCode = "CSE2026"; // 학수번호만 변경. 교과목명 유지
+                        keywordSubjectPair["MSC"].Remove(new UserSubject() { subjectCode = "PRI4027" });
+                        tempSubject.subjectCode = "CSE2026"; // 학수번호만 변경. 교과목명 유지
                         keywordSubjectPair["전문"].Add(tempSubject);
                         //예외 처리 오류 메시지 입력
                         //exceptionList.Add("이산구조 교과목 이산수학으로 대체 인정");
@@ -394,12 +394,12 @@ namespace Graduation2.Models
 
             foreach (UserSubject majorEssential in this.keywordSubjectPair["전문"])
             {
-                if (majorEssential.classCode == "CSE4066")//예외 처리할 과목명 일치시
+                if (majorEssential.subjectCode == "CSE4066")//예외 처리할 과목명 일치시
                 {
                     design1 = majorEssential;
                     design1Status = true;
                 }
-                if (majorEssential.classCode == "CSE4067")
+                if (majorEssential.subjectCode == "CSE4067")
                 {
                     design2 = majorEssential;
                     design2Status = true;
@@ -407,7 +407,7 @@ namespace Graduation2.Models
             }
             foreach (UserSubject majorClassList in this.keywordSubjectPair["전공"])//현장실습
             {
-                if ((majorClassList.classCode == "ITS4003") || (majorClassList.classCode == "ITS4004"))
+                if ((majorClassList.subjectCode == "ITS4003") || (majorClassList.subjectCode == "ITS4004"))
                 {
                     fieldPractice = true;
                 }
@@ -457,20 +457,20 @@ namespace Graduation2.Models
                         if (reader["PREV_CLASS_START"].ToString() == "null")
                             simillarList.Add(new SimillarMajor
                             {
-                                currClassName = reader["CURR_CLASS_NAME"].ToString(),
-                                currClassStartYear = Convert.ToInt32(reader["CURR_CLASS_START"].ToString()),
-                                prevClassName = reader["PREV_CLASS_NAME"].ToString(),
-                                prevClassStartYear = 0,//시작년도가 없는 경우 0으로 대체
-                                prevClassEndYear = Convert.ToInt32(reader["PREV_CLASS_END"].ToString())
+                                currSubjectName = reader["CURR_CLASS_NAME"].ToString(),
+                                currSubjectStartYear = Convert.ToInt32(reader["CURR_CLASS_START"].ToString()),
+                                prevSubjectName = reader["PREV_CLASS_NAME"].ToString(),
+                                prevSubjectStartYear = 0,//시작년도가 없는 경우 0으로 대체
+                                prevSubjectEndYear = Convert.ToInt32(reader["PREV_CLASS_END"].ToString())
                             });
                         else
                             simillarList.Add(new SimillarMajor
                             {
-                                currClassName = reader["CURR_CLASS_NAME"].ToString(),
-                                currClassStartYear = Convert.ToInt32(reader["CURR_CLASS_START"].ToString()),
-                                prevClassName = reader["PREV_CLASS_NAME"].ToString(),
-                                prevClassStartYear = Convert.ToInt32(reader["PREV_CLASS_START"].ToString()),
-                                prevClassEndYear = Convert.ToInt32(reader["PREV_CLASS_END"].ToString())
+                                currSubjectName = reader["CURR_CLASS_NAME"].ToString(),
+                                currSubjectStartYear = Convert.ToInt32(reader["CURR_CLASS_START"].ToString()),
+                                prevSubjectName = reader["PREV_CLASS_NAME"].ToString(),
+                                prevSubjectStartYear = Convert.ToInt32(reader["PREV_CLASS_START"].ToString()),
+                                prevSubjectEndYear = Convert.ToInt32(reader["PREV_CLASS_END"].ToString())
                             });
                     }
                 }
@@ -487,33 +487,33 @@ namespace Graduation2.Models
                             {
                                 startYear = 0,
                                 endYear = Convert.ToInt32(reader["END_YEAR"].ToString()),
-                                classCode = reader["CLASS_CODE"].ToString(),
-                                className = reader["CLASS_NAME"].ToString(),
+                                subjectCode = reader["CLASS_CODE"].ToString(),
+                                subjectName = reader["CLASS_NAME"].ToString(),
                                 otherMajor = reader["OTHER_MAJOR"].ToString(),
-                                otherClassCode = reader["OTHER_CLASS_CODE"].ToString(),
-                                otherClassName = reader["OTHER_CLASS_NAME"].ToString()
+                                otherSubjectCode = reader["OTHER_CLASS_CODE"].ToString(),
+                                otherSubjectName = reader["OTHER_CLASS_NAME"].ToString()
                             });
                         else if (reader["END_YEAR"].ToString() == "")
                             diffMajorList.Add(new DiffMajor
                             {
                                 startYear = Convert.ToInt32(reader["START_YEAR"].ToString()),
                                 endYear = 9999,
-                                classCode = reader["CLASS_CODE"].ToString(),
-                                className = reader["CLASS_NAME"].ToString(),
+                                subjectCode = reader["CLASS_CODE"].ToString(),
+                                subjectName = reader["CLASS_NAME"].ToString(),
                                 otherMajor = reader["OTHER_MAJOR"].ToString(),
-                                otherClassCode = reader["OTHER_CLASS_CODE"].ToString(),
-                                otherClassName = reader["OTHER_CLASS_NAME"].ToString()
+                                otherSubjectCode = reader["OTHER_CLASS_CODE"].ToString(),
+                                otherSubjectName = reader["OTHER_CLASS_NAME"].ToString()
                             });
                         else
                             diffMajorList.Add(new DiffMajor
                             {
                                 startYear = Convert.ToInt32(reader["START_YEAR"].ToString()),
                                 endYear = Convert.ToInt32(reader["END_YEAR"].ToString()),
-                                classCode = reader["CLASS_CODE"].ToString(),
-                                className = reader["CLASS_NAME"].ToString(),
+                                subjectCode = reader["CLASS_CODE"].ToString(),
+                                subjectName = reader["CLASS_NAME"].ToString(),
                                 otherMajor = reader["OTHER_MAJOR"].ToString(),
-                                otherClassCode = reader["OTHER_CLASS_CODE"].ToString(),
-                                otherClassName = reader["OTHER_CLASS_NAME"].ToString()
+                                otherSubjectCode = reader["OTHER_CLASS_CODE"].ToString(),
+                                otherSubjectName = reader["OTHER_CLASS_NAME"].ToString()
                             });
                     }
                     //}
@@ -525,11 +525,11 @@ namespace Graduation2.Models
                 {
                     foreach (SimillarMajor simillar in simillarList)
                     {
-                        if (major.className == simillar.currClassName)// 수강한 과목이 이전 전공명과 동일 할 경우(ex. 14년도 교육과정 적용 학생이 주니어디자인프로젝트가 아닌 공개sw수강)
+                        if (major.subjectName == simillar.currSubjectName)// 수강한 과목이 이전 전공명과 동일 할 경우(ex. 14년도 교육과정 적용 학생이 주니어디자인프로젝트가 아닌 공개sw수강)
                         {
                             // Console.WriteLine("교육과정 적용년도 " + major.);
                             //applicationYear 입력 받아야함
-                            if (Convert.ToInt32(this.applicationYear) <= simillar.prevClassEndYear && Convert.ToInt32(this.applicationYear) >= simillar.prevClassStartYear)
+                            if (Convert.ToInt32(this.applicationYear) <= simillar.prevSubjectEndYear && Convert.ToInt32(this.applicationYear) >= simillar.prevSubjectStartYear)
                             {
                                 //예외처리 오류 메시지 입력
                                // exceptionList.Add(simillar.prevClassName + "과목이 동일유사전공교과목인 " + major.className + " 으로 수강되었는지 확인하십시오.");
