@@ -733,3 +733,4 @@ D:/repos/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Graduation2.genruntimec
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/bin/Debug/netcoreapp3.1/System.Runtime.CompilerServices.Unsafe.dll
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/bin/Debug/netcoreapp3.1/System.Security.Cryptography.ProtectedData.dll
 /Users/apple/Desktop/Graduation2/Graduation2/Graduation2/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
+/Users/apple/Desktop/Graduation2/Graduation2/Graduation2/obj/Debug/netcoreapp3.1/Razor/Views/Home/result.cshtml.g.cs

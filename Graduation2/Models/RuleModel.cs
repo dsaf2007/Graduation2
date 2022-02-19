@@ -1,3 +1,4 @@
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
 using System.Net.Cache;
 using System;
@@ -13,6 +14,7 @@ using Graduation2.Models;
 namespace Graduation2.Models
 {
     // 드롭다운 값에 따라 룰 멤버변수 변경해야함
+    // 엑셀에 맞춰진 룰 형식
     public class Rule
     {
         // 구분 (교양, 전공, 졸업요건, 예외)
@@ -33,11 +35,12 @@ namespace Graduation2.Models
       
         public CheckStrategy checkStrategy { get; set; }
 
+        public string resultMessage { get; set; }
         public string errMessage { get; set; }
 
         public Rule(CheckStrategy checkStrategy,
                     string type, string keyword, string sequenceNumber, string question, 
-                    string singleInput="", List<Subject> requiredSubjects=null, bool shouldTakeAll=false
+                    string singleInput="", List<Subject> requiredSubjects=null
                     ) 
         {
           isPassed = false;
@@ -50,11 +53,18 @@ namespace Graduation2.Models
           this.singleInput = singleInput;
           this.requiredSubjects = requiredSubjects;
           this.shouldTakeAll = shouldTakeAll;
+          this.shouldTakeAll = this.question.Contains("필수")? true : false;
         }
         
         public void CheckRule() {
           isPassed = checkStrategy.CheckRule();
-          errMessage = isPassed ? "" : checkStrategy.errMessage;
+          // errMessage = isPassed ? "" : checkStrategy.errMessage;
+        }
+        public void SetErrorMessage(string errorMessage) {
+          this.errMessage = errMessage;
+        }
+        public void SetResultMessage(string resultMessage) {
+          this.resultMessage = resultMessage;
         }
     }
     public abstract class CheckStrategy
@@ -62,7 +72,7 @@ namespace Graduation2.Models
       public Rule rule {get; set;}
       public Dictionary<string, List<UserSubject>> userSubjectPair { get; set; }
       public Dictionary<string, int> userCreditPair { get; set; }
-      public string errMessage { get; set; }
+      // public string errMessage { get; set; }
 
       public abstract bool CheckRule();
     }
@@ -87,13 +97,21 @@ namespace Graduation2.Models
 
         userValue = Convert.ToDouble(userCreditPair[keyword]);
         requiredValue = Convert.ToDouble(rule.singleInput);
+
         if (userValue < requiredValue)
         {
-          errMessage = String.Format("[{0}] 현재 수강학점: {1}, 졸업요건: {2}, 필요학점: {3}",
+          string errorMessage = String.Format("[{0}] 현재 수강학점: {1}, 졸업요건: {2}, 필요학점: {3}",
                                       keyword, userValue, requiredValue, requiredValue-userValue);
+          rule.SetResultMessage(errorMessage);
           return false;
         }
-        return true;
+        else
+        {
+          string successMessage = String.Format("[{0}] 현재 수강학점: {1}, 졸업요건: {2}",
+                                      keyword, userValue, requiredValue);
+          rule.SetResultMessage(successMessage);
+          return true;
+        }
       }
     }
     public class OXValueChecker : CheckStrategy
@@ -134,43 +152,82 @@ namespace Graduation2.Models
           return requiredCount;
         }
       }
-
+      public int requiredCredit { get; set; }
+      public int RequiredCredit
+      {
+        get
+        {
+          return RequiredCredit;
+        }
+      }
       public MultiValueChecker(Dictionary<string, List<UserSubject>> userSubjectPair,
                                Dictionary<string, int> userCreditPair
                               )
       {
         this.userSubjectPair = userSubjectPair;
         this.userCreditPair = userCreditPair;
+
+        requiredCount = 0;
+        requiredCredit = 0;
       }
       public override bool CheckRule()
       {
         matches = 0;
+        int takenCredit = 0;
         string keyword = rule.keyword;
         List<UserSubject> userSubjects = userSubjectPair[keyword];
         List<Subject> requiredSubjects = rule.requiredSubjects;
+
+        if (rule.shouldTakeAll)
+        {
+          requiredCount = requiredSubjects.Count;
+          foreach(Subject subject in requiredSubjects)
+          {
+            requiredCredit += subject.credit;
+          }
+        }
+        else
+        {
+          requiredCredit = userCreditPair[keyword];
+        }
+
+        // 수강한 과목
+        List<string> takenSubjects = new List<string>();
+        // 수강이 필요한 과목
         List<string> neededSubjects = requiredSubjects.Select(subject => subject.subjectCode).ToList<string>();
 
         foreach(Subject reqSubject in requiredSubjects) {
           foreach(UserSubject userSubject in userSubjects) {
             if (reqSubject.IsSameSubject(userSubject)) {
               matches += 1;
-              neededSubjects.Remove(userSubject.subjectCode);
+              takenCredit += userSubject.credit;
+              neededSubjects.Remove(userSubject.subjectName);
+              takenSubjects.Add(userSubject.subjectName);
               break;
             }
           }
         }
-        if (matches < requiredCount)
+        if (matches < requiredCount || takenCredit < requiredCredit)
         {
-          string neededSubjectsString = String.Join<string>(",", neededSubjects);
-          errMessage = String.Format("[{0}] 현재 수강과목수: {1}, 졸업요건: 총 {2}과목 수강, 필요 수강과목수: {3}",
+          string errMessage = String.Format("[{0}] 현재 수강과목수: {1}, 졸업요건: 총 {2}과목 수강, 필요 수강과목수: {3}",
                                       keyword, matches, requiredCount, requiredCount-matches);
 
+          string neededSubjectsString = String.Join<string>(",", neededSubjects);
           string notice = rule.shouldTakeAll? "필요과목" : "수강가능과목";
           errMessage += String.Format("\n{0}: {1}", notice, neededSubjectsString);
-          
+
+          rule.SetResultMessage(errMessage);    
           return false;
         }
-        return true;
+        else
+        {
+          string takenSubjectsString = String.Join<string>(",", takenSubjects);
+          string successMessage = String.Format("[{0}] 현재 수강과목수: {1}, 졸업요건: 총 {2}과목 수강",
+                                      keyword, matches, requiredCount);
+          successMessage += String.Format("\n 수강한 과목: {0}", takenSubjectsString);
+          rule.SetResultMessage(successMessage);
+          return true;
+        }
       }
     }
 }
