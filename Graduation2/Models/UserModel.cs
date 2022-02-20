@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Dynamic;
+using System.Runtime.CompilerServices;
 using System.Net.Cache;
 using System;
 using System.Text;
@@ -9,7 +10,6 @@ using System.Collections.Generic;
 using ExcelDataReader;
 using MySql.Data.MySqlClient;
 using Graduation2.Models;
-using System.Linq;
 
 namespace Graduation2.Models
 {
@@ -40,23 +40,62 @@ namespace Graduation2.Models
     }
     public class UserInfo // 취득교과목
     {
-
         //public List<Rule.Models.Rule> rule = new List<Rule.Models.Rule>();
         public List<TempRule> rule = new List<TempRule>();
 
-        private Dictionary<string, List<UserSubject>> keywordSubjectPair;
-        private Dictionary<string, int> keywordCreditPair;
+        public Dictionary<string, List<UserSubject>> keywordSubjectPair;
+        public Dictionary<string, int> keywordCreditPair;
 
         public Dictionary<string, string> errorMessageList;
 
-        private int totalCredit;
-
+        public int totalCredit { get; set; }
         public static readonly string[] ruleKeywords = {
             "공통교양", "기본소양", "일반교양",
             "수학", "과학", "전산학", "과학실험", "MSC/BSM",
-            "전공", "전공필수", "전공전문", "전공설계",
+            "전공", "전공필수", "전공전문", "설계",
             "기초설계", "요소설계", "종합설계", // 얘네는 성적표에 '전공설계'로 나옴
-            "영어"
+            "영어강의"
+        };
+        public static readonly DesignSubject[] gichoDesignSubjects = {
+          new DesignSubject {
+            subjectCode = "CSE2028",
+            subjectName = "어드벤처디자인",
+            credit = 3,
+            designCredit = 3,
+            designType = "기초설계"
+          },
+          new DesignSubject {
+            subjectCode = "CSE2016",
+            subjectName = "창의적공학설계",
+            credit = 3,
+            designCredit = 3,
+            designType = "기초설계"
+          }
+        };
+        public static readonly DesignSubject[] yosoDesignSubjects = {
+          new DesignSubject {
+            subjectCode = "CSE4074",
+            subjectName = "공개SW프로젝트",
+            credit = 3,
+            designCredit = 3,
+            designType = "요소설계"
+          }
+        };
+        public static readonly DesignSubject[] jonghabDesignSubjects = {
+          new DesignSubject {
+            subjectCode = "CSE4066",
+            subjectName = "컴퓨터공학종합설계1",
+            credit = 3,
+            designCredit = 3,
+            designType = "종합설계"
+          },
+          new DesignSubject {
+            subjectCode = "CSE4067",
+            subjectName = "컴퓨터공학종합설계2",
+            credit = 3,
+            designCredit = 3,
+            designType = "종합설계"
+          }
         };
 
         public UserInfo()
@@ -111,20 +150,7 @@ namespace Graduation2.Models
                 semester = "1학기",
               },
             };
-            // CheckStrategy checkStrategy = getCheckStrategy(replyType);
-            // subject, credit pair <- UserInfo
-            CheckStrategy checkStrategy = new MultiValueChecker(keywordSubjectPair, keywordCreditPair);
             // 드롭다운 값에 따라 룰 멤버변수 변경해야함
-            Rule r1 = new Rule(checkStrategy, "교양", "수학", "3", "수학 필수 과목 입력", null, testSubjects1);
-            Rule r2 = new Rule(checkStrategy, "전공", "전공필수", "3", "전공 필수 과목 입력", null, testSubjects2);
-            testRules.Add(r1);
-            testRules.Add(r2);
-            // // ChecRule() 따로 빼야함
-            // foreach(Rule rule in testRules)
-            // {
-            //   rule.CheckRule();
-            // }
-            // 220214 ____________________|
 
             using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
             {
@@ -136,10 +162,6 @@ namespace Graduation2.Models
                 {
                     while (reader.Read())
                     {
-                        // TempRule temp = new TempRule();
-                        // temp.keyword=reader["keyword"].ToString();
-                        // temp.question_type=reader["question_type"].ToString();
-                        // temp.value = reader["value"].ToString();
                         rule.Add(new TempRule
                         {
                             keyword = reader["keyword"].ToString(),
@@ -187,7 +209,8 @@ namespace Graduation2.Models
                 }
                 totalCredit += userSubject.credit;
             }
-            PrintUserSubjects();
+            // debug
+            // PrintUserSubjects();
         }
         // debug
         public void PrintUserSubjects()

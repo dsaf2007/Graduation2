@@ -1,0 +1,86 @@
+﻿@using Graduation2.Models
+@model Tuple<UserInfo, List<Rule>>
+@{
+  Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <title>UserView</title>
+</head>
+
+<body>
+  <h3>항목별 수강 학점 (괄호 안은 수강과목 수)</h3>
+  <table cellpadding="0" cellspacing="0" border="1">
+    <tr>
+      <th>총이수학점</th>
+      @{
+        string[] ruleKeywords = Graduation2.Models.UserInfo.ruleKeywords;
+        Dictionary<string, List<UserSubject>> keywordSubjectPair = Model.Item1.keywordSubjectPair;
+        Dictionary<string, int> keywordCreditPair = Model.Item1.keywordCreditPair;
+      }
+      @foreach (string keyword in ruleKeywords)
+      {
+        <th>@keyword</th>
+      }
+    </tr>
+    <tr>
+      <td>
+        <center>@Model.Item1.totalCredit</center>
+      </td>
+      @foreach (string keyword in ruleKeywords)
+      {
+        <td>
+          <center>@keywordCreditPair[keyword] (@keywordSubjectPair[keyword].Count)</center>
+        </td>
+      }
+    </tr>
+  </table>
+  <hr />
+  <h3>졸업요건 체크리스트</h3>
+
+  @{
+    int passedRule = 0;
+    <table cellpadding="0" cellspacing="0" border="1">
+      <tr>
+        <th>번호</th>
+        <th>구분</th>
+        <th>질문</th>
+        <th>만족여부</th>
+        <th>비고</th>
+      </tr>
+      @foreach (Rule rule in Model.Item2)
+      {
+        int ruleNumber = Convert.ToInt32(@rule.sequenceNumber);
+        @if (6 <= ruleNumber && ruleNumber <= 23)
+        {
+          <tr>
+            <td>@(ruleNumber-5)</td>
+            <td>@rule.division</td>
+            <td>@rule.question</td>
+            <td>
+              @if (@rule.isPassed)
+              {
+                <center style="color:blue;">O</center>
+                passedRule += 1;
+              }
+              else
+              {
+                <center style="color:red;">X</center>
+              }
+            </td>
+            <td>
+              @rule.resultMessage
+            </td>
+          </tr>
+        }
+      }
+    </table>
+    <hr />
+  }
+</body>
+
+</html>
