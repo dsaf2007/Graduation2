@@ -48,8 +48,9 @@ namespace Graduation2.Controllers
             string baseFilePath = this.environment.WebRootPath;
 
             // string inputFile = Path.Combine(baseFilePath, "upload",fileNames[0]);
-            string templateFilePath = Path.Combine(baseFilePath, "template_2016CSE.xlsx");
-            string gradeFile = Path.Combine(baseFilePath, "student_score.xlsx");
+            // 직접 입력 받는 코드로 변경예정. 테스트용 하드코드
+            string templateFilePath = Path.Combine(baseFilePath, "templates", "template_2016CSE.xlsx");
+            string gradeFile = Path.Combine(baseFilePath, "user", "student_score_2.xlsx");
 
             UserInfo userInfo = new UserInfo();
             userInfo.GetUserSubject(gradeFile); // 수강 과목 리스트 및 이수 학점

@@ -39,6 +39,12 @@ namespace Graduation2.Models
         string keyword = rule.keyword;
         userValue = Convert.ToDouble(userCreditPair[keyword]);
         requiredValue = Convert.ToDouble(rule.singleInput);
+        
+        // 룰 조건이 이상해서 어쩔수 없이 예외처리
+        if(rule.question.Contains("필요") && rule.question.Contains("종합설계")) {
+          keyword = "[종합설계이수]";
+          userValue = userCreditPair["기초설계"] + userCreditPair["요소설계"];
+        }
 
         if (userValue < requiredValue)
         {
@@ -139,10 +145,6 @@ namespace Graduation2.Models
             requiredCredit += subject.credit;
           }
         }
-        else
-        {
-          requiredCredit = userCreditPair[keyword];
-        }
 
         // 수강한 과목
         List<string> takenSubjects = new List<string>();
@@ -160,21 +162,29 @@ namespace Graduation2.Models
             }
           }
         }
-        if (matches < requiredCount || takenCredit < requiredCredit)
+        string takenSubjectsString = String.Join<string>(", ", takenSubjects);
+
+        if (!rule.shouldTakeAll) {
+          // 선택 과목 입력 룰의 경우, Pass or fail을 표시하지 않음.
+          string resultMessage = String.Format("[{0}] 수강과목수: {1}  ", keyword, matches);
+          if (takenSubjects.Count > 0)
+            resultMessage += String.Format("[수강한 과목] {0}", takenSubjectsString);
+          rule.SetResultMessage(resultMessage);
+          return false;
+        } 
+        else if (matches < requiredCount || takenCredit < requiredCredit)
         {
           string errMessage = String.Format("[{0}] 수강과목수: {1}, 졸업요건: {2}과목 ({1}/{2}), 필요 과목수: {3}  ",
                                       keyword, matches, requiredCount, requiredCount-matches);
 
           string neededSubjectsString = String.Join<string>(", ", neededSubjects);
-          string notice = rule.shouldTakeAll? "[필요과목]" : "[수강가능과목]";
-          errMessage += String.Format("{0}: {1}", notice, neededSubjectsString);
+          errMessage += String.Format("[필요과목]: {0}", neededSubjectsString);
 
           rule.SetResultMessage(errMessage);    
           return false;
         }
         else
         {
-          string takenSubjectsString = String.Join<string>(", ", takenSubjects);
           string successMessage = String.Format("[{0}] 수강과목수: {1}, 졸업요건: {2}과목  ",
                                       keyword, matches, requiredCount);
 

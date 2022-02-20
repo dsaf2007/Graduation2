@@ -48,9 +48,24 @@ namespace Graduation2.Models
 
         public Dictionary<string, string> errorMessageList;
 
+        //실제로는 입력 받아야함.
+        private string username = "TEST";
+        private string major = "컴퓨터공학전공";
+        private string applicationYear ="2016";
+        private string advancedStatus = "N";
 
-        private string applicationYear ="2016"; //temp 실제로는 입력 받아야함.
-        private string advancedStatus = "N"; //실제로는 입력 받아야함.
+        public string GetUsername()
+        {
+          return this.username;
+        }
+        public string GetMajor()
+        {
+          return this.major;
+        }
+        public string GetApplicationYear()
+        {
+          return this.applicationYear;
+        }
 
         public int totalCredit;
 
@@ -175,9 +190,11 @@ namespace Graduation2.Models
                     keywordCreditPair[keyword] += userSubject.credit;
                 }
                 totalCredit += userSubject.credit;
+                // debug
+                Console.WriteLine($"{userSubject.subjectName}");
             }
             // debug
-            // PrintUserSubjects();
+            PrintUserSubjects();
         }
         // debug
         public void PrintUserSubjects()
