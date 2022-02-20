@@ -119,46 +119,6 @@ namespace Graduation2.Models
 
         public void GetRule()
         {
-            // test
-            List<Rule> testRules = new List<Rule>();
-            // 드롭다운 응답유형: 학점 / 과목 / OX
-            string replyType = "학점";
-            List<Subject> testSubjects1 = new List<Subject>()
-            {
-              new Subject {
-                subjectCode = "PRI1234",
-                subjectName = "확률과통계학",
-                credit = 3,
-                year = "2021",
-                semester = "1학기",
-              },
-              new Subject {
-                subjectCode = "PRI1235",
-                subjectName = "공학수학1",
-                credit = 3,
-                year = "2021",
-                semester = "1학기",
-              },
-            };
-            List<Subject> testSubjects2 = new List<Subject>()
-            {
-              new Subject {
-                subjectCode = "PRI1234",
-                subjectName = "확률과통계학",
-                credit = 3,
-                year = "2021",
-                semester = "1학기",
-              },
-              new Subject {
-                subjectCode = "PRI1235",
-                subjectName = "공학수학1",
-                credit = 3,
-                year = "2021",
-                semester = "1학기",
-              },
-            };
-            // 드롭다운 값에 따라 룰 멤버변수 변경해야함
-
             using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
             {
                 string selectQuery = "SELECT * FROM rule";
@@ -282,76 +242,6 @@ namespace Graduation2.Models
                 }
             }
             return temp;
-        }
-
-        public void CheckRule()
-        {
-            /*
-              // refactoring
-              tempRule.CheckRule();
-
-            */
-            //keywordSubjectPair, keywordCreditPair
-            foreach (TempRule temprule in rule)
-            {
-                if (temprule.question_type == "단수")
-                {
-                    if (Convert.ToInt32(temprule.value) != keywordCreditPair[temprule.keyword]) // rule의 단수가 일치하지 않을 때
-                    {
-                        //keyword 의 학점을 만족하지 않는다 error message 출력
-                        string errMessage = temprule.keyword + "가" + keywordCreditPair[temprule.keyword] + "로 기준인" + temprule.value + "를 만족하지 않습니다.";
-                        errorMessageList[temprule.keyword] = errMessage;
-                    }
-                    else
-                    {
-                        temprule.check = true;
-                    }
-                }
-                else if (temprule.question_type == "목록")
-                {
-                    //하나의 String 형태인 value를 list 형태로 pharsing 후 비교
-                    //List<string> valueList = new List<string>();
-                    string[] valueArray = temprule.value.Split('/');
-                    List<string> valueList = new List<string>();
-                    foreach (string value in valueArray)
-                    {
-                        valueList.Add(value);
-                    }
-                    //List간 비교
-                    bool compare = false;
-                    List<string> subjectCodeList = new List<string>();
-                    foreach (UserSubject subject in keywordSubjectPair[temprule.keyword])
-                    {
-                        subjectCodeList.Add(subject.subjectCode);
-                    }
-
-                    var result = subjectCodeList.Where(x => valueList.Count(s => x.Contains(s)) == 0).ToList();
-
-                    if (result.IsEmpty() == false) // 필수교과목이 없을 때.
-                    {
-                        //에러메세지 출력
-                        temprule.check = false;
-                    }
-                    else
-                    {
-                        temprule.check = true;
-                    }
-                }
-            }
-        }
-        public List<string> addToList(List<string> list_, string input_)
-        {
-            List<string> temp = new List<string>();
-
-            temp = list_;
-            temp.Add(input_);
-
-            return temp;
-        }
-
-        public int addNum(int num_, int add_)
-        {
-            return num_ + add_;
         }
 
         public void CheckException()

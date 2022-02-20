@@ -30,7 +30,17 @@ namespace Graduation2.Controllers
         // {
         //     _logger = logger;
         // }
-
+        public bool IsValidRule(Rule rule)
+        {
+          if(rule.division == "교양" || rule.division == "전공")
+            return true;
+          else
+            return false;
+          // if(Convert.ToInt32(newRule.sequenceNumber) > 23 || Convert.ToInt32(newRule.sequenceNumber) < 6)
+          //    return false;
+          // else
+          //   return true;
+        }
         public IActionResult Index()
         {
             // 한글 인코딩
@@ -44,7 +54,6 @@ namespace Graduation2.Controllers
             UserInfo userInfo = new UserInfo();
             userInfo.GetUserSubject(gradeFile); // 수강 과목 리스트 및 이수 학점
 
-            List<Rule> dummyRule = new List<Rule>();
             List<Rule> rules = new List<Rule>();
 
             string enrollmentYear = "";
@@ -56,6 +65,7 @@ namespace Graduation2.Controllers
                 using(var reader = ExcelReaderFactory.CreateReader(stream))
                 {
                     // sheet 
+                    
                     int currentRuleNum = 0;
                     int currentSheetNum = 1;
                     List<int> multiInputRuleNumber = new List<int>();
@@ -89,8 +99,7 @@ namespace Graduation2.Controllers
                         // DI..?
                         CheckStrategy checkStrategy = null;
                         // 처음 기초정보, 뒷부분 졸업요건 파트 키워드 적용 잘 안됨
-                        if(Convert.ToInt32(newRule.sequenceNumber) > 23 || 
-                        Convert.ToInt32(newRule.sequenceNumber) < 6)
+                        if(!IsValidRule(newRule))
                           checkStrategy = new NoCheckStrategy();
                         else {
                           switch(newRule.replyType)
@@ -139,6 +148,7 @@ namespace Graduation2.Controllers
                       {
                         // 전공 or 설계과목 : cols = 5
                         int cols = reader.FieldCount;
+
                         string[] valueArray = new string[cols];
                         for(int i = 0 ; i < cols ; i++)
                         {

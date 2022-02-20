@@ -48,14 +48,14 @@
       <tr>
         <th>번호</th>
         <th>구분</th>
-        <th>질문</th>
+        <th>졸업요건</th>
         <th>만족여부</th>
         <th>비고</th>
       </tr>
       @foreach (Rule rule in Model.Item2)
       {
         int ruleNumber = Convert.ToInt32(@rule.sequenceNumber);
-        @if (6 <= ruleNumber && ruleNumber <= 23)
+        @if (rule.division == "교양" || rule.division == "전공")
         {
           <tr>
             <td>@(ruleNumber-5)</td>
@@ -73,7 +73,14 @@
               }
             </td>
             <td>
-              @rule.resultMessage
+              @if (rule.isPassed)
+              {
+                @rule.resultMessage
+              }
+              else
+              {
+                <b>@rule.resultMessage</b>
+              }
             </td>
           </tr>
         }
