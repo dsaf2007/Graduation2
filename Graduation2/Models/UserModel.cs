@@ -278,7 +278,7 @@ namespace Graduation2.Models
                     bool CSE2026 = false;
                     bool PRI4027 = false;
                     UserSubject tempSubject = new UserSubject();
-                    foreach (UserSubject majorEssential in this.keywordSubjectPair["전문"])
+                    foreach (UserSubject majorEssential in this.keywordSubjectPair["전공전문"])
                     {
                         if (majorEssential.subjectCode == "CSE2026")
                         {
@@ -309,7 +309,7 @@ namespace Graduation2.Models
             bool design2Status = false;
             bool fieldPractice = false;
 
-            foreach (UserSubject majorEssential in this.keywordSubjectPair["전문"])
+            foreach (UserSubject majorEssential in this.keywordSubjectPair["전공전문"])
             {
                 if (majorEssential.subjectCode == "CSE4066")//예외 처리할 과목명 일치시
                 {
@@ -438,7 +438,7 @@ namespace Graduation2.Models
                 }
                 temp = this.keywordSubjectPair["전공"];
 
-                foreach (UserSubject major in this.keywordSubjectPair["전문"])
+                foreach (UserSubject major in this.keywordSubjectPair["전공전문"])
                 {
                     foreach (SimillarMajor simillar in simillarList)
                     {
