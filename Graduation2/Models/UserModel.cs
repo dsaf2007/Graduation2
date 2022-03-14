@@ -383,11 +383,11 @@ namespace Graduation2.Models
                         else
                             simillarList.Add(new SimillarMajor
                             {
-                                currSubjectName = reader["CURR_CLASS_NAME"].ToString(),
-                                currSubjectStartYear = Convert.ToInt32(reader["CURR_CLASS_START"].ToString()),
-                                prevSubjectName = reader["PREV_CLASS_NAME"].ToString(),
-                                prevSubjectStartYear = Convert.ToInt32(reader["PREV_CLASS_START"].ToString()),
-                                prevSubjectEndYear = Convert.ToInt32(reader["PREV_CLASS_END"].ToString())
+                                currSubjectName = reader["CURR_SUBJECT_NAME"].ToString(),
+                                currSubjectStartYear = Convert.ToInt32(reader["CURR_SUBJECT_START"].ToString()),
+                                prevSubjectName = reader["PREV_SUBJECT_NAME"].ToString(),
+                                prevSubjectStartYear = Convert.ToInt32(reader["PREV_SUBJECT_START"].ToString()),
+                                prevSubjectEndYear = Convert.ToInt32(reader["PREV_SUBJECT_END"].ToString())
                             });
                     }
                 }
