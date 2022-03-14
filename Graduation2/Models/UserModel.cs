@@ -404,33 +404,33 @@ namespace Graduation2.Models
                             {
                                 startYear = 0,
                                 endYear = Convert.ToInt32(reader["END_YEAR"].ToString()),
-                                subjectCode = reader["CLASS_CODE"].ToString(),
-                                subjectName = reader["CLASS_NAME"].ToString(),
+                                subjectCode = reader["SUBJECT_CODE"].ToString(),
+                                subjectName = reader["SUBJECT_NAME"].ToString(),
                                 otherMajor = reader["OTHER_MAJOR"].ToString(),
-                                otherSubjectCode = reader["OTHER_CLASS_CODE"].ToString(),
-                                otherSubjectName = reader["OTHER_CLASS_NAME"].ToString()
+                                otherSubjectCode = reader["OTHER_SUBJECT_CODE"].ToString(),
+                                otherSubjectName = reader["OTHER_SUBJECT_NAME"].ToString()
                             });
                         else if (reader["END_YEAR"].ToString() == "")
                             diffMajorList.Add(new DiffMajor
                             {
                                 startYear = Convert.ToInt32(reader["START_YEAR"].ToString()),
                                 endYear = 9999,
-                                subjectCode = reader["CLASS_CODE"].ToString(),
-                                subjectName = reader["CLASS_NAME"].ToString(),
+                                subjectCode = reader["SUBJECT_CODE"].ToString(),
+                                subjectName = reader["SUBJECT_NAME"].ToString(),
                                 otherMajor = reader["OTHER_MAJOR"].ToString(),
-                                otherSubjectCode = reader["OTHER_CLASS_CODE"].ToString(),
-                                otherSubjectName = reader["OTHER_CLASS_NAME"].ToString()
+                                otherSubjectCode = reader["OTHER_SUBJECT_CODE"].ToString(),
+                                otherSubjectName = reader["OTHER_SUBJECT_NAME"].ToString()
                             });
                         else
                             diffMajorList.Add(new DiffMajor
                             {
                                 startYear = Convert.ToInt32(reader["START_YEAR"].ToString()),
                                 endYear = Convert.ToInt32(reader["END_YEAR"].ToString()),
-                                subjectCode = reader["CLASS_CODE"].ToString(),
-                                subjectName = reader["CLASS_NAME"].ToString(),
+                                subjectCode = reader["SUBJECT_CODE"].ToString(),
+                                subjectName = reader["SUBJECT_NAME"].ToString(),
                                 otherMajor = reader["OTHER_MAJOR"].ToString(),
-                                otherSubjectCode = reader["OTHER_CLASS_CODE"].ToString(),
-                                otherSubjectName = reader["OTHER_CLASS_NAME"].ToString()
+                                otherSubjectCode = reader["OTHER_SUBJECT_CODE"].ToString(),
+                                otherSubjectName = reader["OTHER_SUBJECT_NAME"].ToString()
                             });
                     }
                     //}
