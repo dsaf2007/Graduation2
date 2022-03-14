@@ -162,24 +162,7 @@ namespace Graduation2.Models
 
         public void GetUserSubject(string studentScoreFile)
         {
-            // using (var subjectStream = System.IO.File.Open(filename, System.IO.FileMode.Open, System.IO.FileAccess.Read))
-            // {
-            //     using (var subjectReader = ExcelReaderFactory.CreateReader(SubjectStream))
-            //     {
-            //         subjectReader.Read();
-            //         using (MysqlConnection connection = new MysqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
-            //         {
-            //             while(subjectReader.Read())
-            //             {
-            //             // string insertQuery = string.Format("INSERT INTO UserSubject(year,semester,completionDiv,completionDivField,SubjectCode,"
-            //             //                     +"SubjectName,credit,engineeringFactor,engineeringFactorDetail,english,retake)"
-            //             //                     +"VALUES ( '{0}','{1}','{2}','{3}','{4}','{5}',{6},'{7}','{8}','{9}','{10}')"
-            //             //                     ,subjectReader
-            //             }
-            //         }
-
-            //     }
-            // }
+            
             List<UserSubject> userSubjects = new List<UserSubject>();
             userSubjects = ReadUserSubject(studentScoreFile);
 
@@ -500,26 +483,6 @@ namespace Graduation2.Models
             }
         }
 
-        // dictionary를 사용하기에 예외
-        // public void initPairList()
-        // {
-        //     using (MySqlConnection connection = new MySqlConnection("Server=101.101.216.163/;Port=5555;Database=testDB;Uid=CSDC;Pwd=1q2w3e4r"))
-        //     {
-        //         string selectQuery = "SELECT DISTINCT keyword FROM rule";
-        //         connection.Open();
-        //         MySqlCommand command = new MySqlCommand(selectQuery, connection);
-        //         List<string> tempList = new List<string>();
-
-        //         using (var reader = command.ExecuteReader())
-        //         {
-        //             while (reader.Read())
-        //             {
-        //             subjectNameList.Add(reader["keyword"].ToString(),tempList);
-        //             subjectCreditList.add(reader["keyword"].ToString(),0);
-        //             }
-        //         }
-        //     }
-        // }
 
 
     }

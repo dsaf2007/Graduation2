@@ -54,6 +54,7 @@ namespace Graduation2.Controllers
 
             UserInfo userInfo = new UserInfo();
             userInfo.GetUserSubject(gradeFile); // 수강 과목 리스트 및 이수 학점
+            userInfo.CheckException(); // 예외처리
 
             List<Rule> rules = new List<Rule>();
 
