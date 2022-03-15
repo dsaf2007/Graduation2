@@ -481,6 +481,10 @@ namespace Graduation2.Models
                     }
                 }
             }
+            foreach(string exceptionString in exceptionList)
+            {
+                Console.WriteLine(exceptionString);
+            }
         }
 
 
