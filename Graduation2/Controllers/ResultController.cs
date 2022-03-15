@@ -187,7 +187,7 @@ namespace Graduation2.Controllers
             {
               rule.CheckRule();
             }
-            var result = new Tuple<UserInfo, List<Rule>>(userInfo, rules) {};
+            var result = new Tuple<UserInfo, List<Rule>,List<string>>(userInfo, rules,userInfo.exceptionList) {};
             return View(result);
         }
 

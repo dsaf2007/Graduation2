@@ -1,5 +1,5 @@
 ﻿@using Graduation2.Models
-@model Tuple<UserInfo, List<Rule>>
+@model Tuple<UserInfo, List<Rule>,List<string>>
 @{
   Layout = null;
 }
@@ -129,6 +129,21 @@
       </table>
       <hr>
       <br><br>
+
+      <table cellpadding="0" cellspacing="0" border="1">
+        <tr>
+          <th>번호</th>
+          <th>예외</th>
+        </tr>
+        <tr>
+          @{int exceptionNum =0;}
+          @foreach (string exceptionString in Model.Item3)
+          {
+            <td>@exceptionNum</td>
+            <td>@exceptionString</td>
+          }
+        </tr>
+      </table>
     }
   </div>
   <hr />
